@@ -2,27 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>The Armah Christening</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
-        /* --- LUXURY COLOR PALETTE --- */
         :root {
-            --royal-navy: #0a192f;      /* Deep Midnight Blue */
-            --navy-light: #112240;      /* Slightly lighter navy for contrast */
-            --gold-leaf: #d4af37;       /* Metallic Gold */
-            --gold-pale: #f3e5ab;       /* Champagne Gold */
-            --paper-white: #fdfdfd;     /* Crisp White */
-            --slate-gray: #8892b0;      /* Muted text color */
+            --royal-navy: #0a192f;
+            --navy-light: #112240;
+            --gold-leaf: #d4af37;
+            --gold-pale: #f3e5ab;
+            --paper-white: #fdfdfd;
+            --slate-gray: #8892b0;
         }
 
-        /* --- GLOBAL RESET & TYPOGRAPHY --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Montserrat', sans-serif;
@@ -30,63 +24,146 @@
             color: var(--paper-white);
             display: flex;
             justify-content: center;
-            min-height: 100vh;
-            padding: 40px 20px;
+            min-height: 100dvh;
+            padding: 20px 0; /* Reduced padding for mobile focus */
+            overflow-x: hidden;
+        }
+
+        /* --- ANIMATION KEYFRAMES --- */
+        /* The "Drawing" effect for SVGs */
+        @keyframes drawLines {
+            to { stroke-dashoffset: 0; }
+        }
+        
+        /* Fade in effect for text */
+        @keyframes subtleFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* --- THE CARD CONTAINER --- */
         .luxury-card {
             width: 100%;
-            max-width: 550px; 
+            max-width: 500px;
             background-color: var(--navy-light);
-            border: 1px solid var(--gold-leaf); 
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); 
+            /* Border removed for sleeker mobile feel, added top gold accent */
+            border-top: 3px solid var(--gold-leaf);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
             position: relative;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
+            min-height: 100dvh;
         }
 
-        /* Decorative Gold Corners */
-        .corner-decor {
+        /* --- SVG DECORATIONS --- */
+        .svg-decor {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--gold-leaf);
-            z-index: 10;
+            pointer-events: none;
+            z-index: 0;
         }
-        .top-left { top: 12px; left: 12px; border-right: none; border-bottom: none; }
-        .top-right { top: 12px; right: 12px; border-left: none; border-bottom: none; }
-        .bottom-left { bottom: 12px; left: 12px; border-right: none; border-top: none; }
-        .bottom-right { bottom: 12px; right: 12px; border-left: none; border-top: none; }
 
-        /* --- HEADER SECTION --- */
+        /* Styling the SVG lines */
+        .svg-decor path, .baby-svg path {
+            fill: none;
+            stroke: var(--gold-leaf);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-miterlimit: 10;
+            /* Prepare for animation */
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            opacity: 0.7;
+        }
+
+        /* Top Left Flower */
+        .floral-tl {
+            top: 0;
+            left: 0;
+            width: 180px;
+            height: auto;
+            animation: drawLines 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        /* Bottom Right Flower */
+        .floral-br {
+            bottom: 0;
+            right: 0;
+            width: 180px;
+            height: auto;
+            transform: rotate(180deg);
+             /* Starts slightly later */
+            animation: drawLines 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
+        }
+
+        /* --- HEADER --- */
         header {
             text-align: center;
-            padding: 70px 40px 40px 40px;
+            padding: 50px 30px 30px 30px;
             position: relative;
+            z-index: 2;
         }
 
-        /* The Family Crest / Monogram */
+        /* Container for Baby & Monogram */
+        .crest-container {
+            position: relative;
+            width: 120px;
+            height: 140px;
+            margin: 0 auto 20px auto;
+        }
+
+        /* The Baby Line Art */
+        .baby-svg {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: auto;
+            z-index: 1;
+        }
+        
+        .baby-svg path {
+             stroke-width: 2;
+             /* Baby draws after flowers start */
+             animation: drawLines 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s forwards;
+        }
+
+        /* The Monogram "A" */
         .monogram {
             font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
+            font-size: 3rem;
             color: var(--gold-leaf);
-            border: 1px solid var(--gold-leaf);
-            width: 90px;
-            height: 90px;
-            line-height: 86px;
+            border: 2px solid var(--gold-leaf);
+            width: 80px;
+            height: 80px;
+            line-height: 76px;
             border-radius: 50%;
-            margin: 0 auto 30px auto;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--navy-light); /* Hides svg lines behind it */
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            
+            /* Initial State: Hidden */
+            opacity: 0;
+            /* Animation: Fade in AFTER drawings are mostly done */
+            animation: subtleFadeIn 1s ease-out 2.5s forwards;
+        }
+
+        /* Text Elements - Initially Hidden */
+        .text-content-wrapper {
+            opacity: 0;
+            /* Fade in after monogram */
+            animation: subtleFadeIn 1s ease-out 2.8s forwards;
         }
 
         .family-name {
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 6px;
-            font-size: 0.8rem;
+            letter-spacing: 5px;
+            font-size: 0.7rem;
             color: var(--slate-gray);
             margin-bottom: 10px;
             font-weight: 500;
@@ -94,10 +171,9 @@
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-weight: 600; /* Slightly lighter for elegance */
+            font-weight: 600;
             font-style: italic;
-            letter-spacing: 1px;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             background: linear-gradient(to right, var(--gold-pale), var(--gold-leaf), var(--gold-pale));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -109,56 +185,55 @@
             width: 40px;
             height: 1px;
             background-color: var(--gold-leaf);
-            margin: 30px auto;
-            opacity: 0.6;
+            margin: 20px auto;
+            opacity: 0.5;
         }
 
-        /* --- TIMELINE SECTION --- */
+        /* --- TIMELINE --- */
         .program-list {
-            padding: 0 40px 60px 40px;
+            padding: 10px 30px 40px 30px;
+            flex-grow: 1;
+            position: relative;
+            z-index: 2;
         }
 
         .time-slot {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
             position: relative;
             opacity: 0; 
-            transform: translateY(10px);
-            transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: translateY(15px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         
-        /* The Time (Left) */
         .ts-time {
-            width: 80px;
+            width: 70px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
             color: var(--gold-leaf);
             text-align: right;
-            padding-right: 25px;
-            padding-top: 5px;
+            padding-right: 18px;
+            padding-top: 4px;
+            flex-shrink: 0;
         }
 
-        /* The Divider Line */
         .ts-divider {
             width: 1px;
             background: linear-gradient(to bottom, var(--gold-leaf) 0%, rgba(10, 25, 47, 0) 90%);
             position: absolute;
-            left: 80px;
+            left: 70px;
             top: 8px;
-            bottom: -40px;
+            bottom: -30px;
             opacity: 0.3;
         }
         
-        .time-slot:last-child .ts-divider {
-            display: none;
-        }
+        .time-slot:last-child .ts-divider { display: none; }
 
-        /* The Diamond Marker */
         .ts-marker {
             position: absolute;
-            left: 77px; 
+            left: 67px; 
             top: 8px;
             width: 7px;
             height: 7px;
@@ -166,71 +241,85 @@
             border: 1px solid var(--gold-leaf);
             transform: rotate(45deg);
             z-index: 2;
-            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
         }
 
-        /* The Event (Right) */
         .ts-event {
             flex: 1;
-            padding-left: 25px;
+            padding-left: 20px;
         }
 
         .ts-event h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 400;
             color: var(--paper-white);
             margin-bottom: 4px;
+            line-height: 1.3;
         }
         
-        /* Highlight specific important events */
         .highlight h3 {
             color: var(--gold-leaf);
             font-weight: 600;
         }
 
-        /* --- FOOTER --- */
         footer {
             text-align: center;
-            padding: 30px;
+            padding: 25px;
             border-top: 1px solid rgba(212, 175, 55, 0.1);
             font-size: 0.65rem;
             color: var(--slate-gray);
             letter-spacing: 2px;
             text-transform: uppercase;
+            position: relative;
+            z-index: 2;
+            margin-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Responsive */
-        @media(max-width: 480px) {
-            body { padding: 0; }
-            .luxury-card { border: none; min-height: 100vh; max-width: 100%; border-radius: 0;}
-            header { padding: 60px 20px 30px 20px; }
-            .program-list { padding: 0 20px 80px 20px; }
+        /* --- MOBILE TWEAKS --- */
+        @media (max-width: 480px) {
+             body { padding: 0; }
+            .luxury-card { 
+                border-top: none;
+                box-shadow: none;
+            }
+            .floral-tl, .floral-br { width: 140px; opacity: 0.5; }
+             h1 { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
     <div class="luxury-card">
-        <div class="corner-decor top-left"></div>
-        <div class="corner-decor top-right"></div>
-        <div class="corner-decor bottom-left"></div>
-        <div class="corner-decor bottom-right"></div>
+        <svg class="svg-decor floral-tl" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <path d="M20,20 C50,40 80,120 180,180 M40,10 C80,30 100,100 160,150 M10,50 C30,80 60,140 140,190 M80,20 C100,40 120,80 130,120 M20,90 C40,110 70,150 110,180"/>
+        </svg>
+        
+        <svg class="svg-decor floral-br" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <path d="M20,20 C50,40 80,120 180,180 M40,10 C80,30 100,100 160,150 M10,50 C30,80 60,140 140,190 M80,20 C100,40 120,80 130,120 M20,90 C40,110 70,150 110,180"/>
+        </svg>
 
         <header>
-            <div class="monogram">A</div>
+            <div class="crest-container">
+                <svg class="baby-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <path d="M30,50 Q40,30 65,35 Q80,40 85,60 M65,35 Q70,55 62,65 Q55,72 45,70 M50,55 Q58,58 62,55 M45,45 C40,40 35,45 38,52"/>
+                </svg>
+                <div class="monogram">A</div>
+            </div>
             
-            <p class="family-name">The Armah's</p>
-            <h1>Christening<br>Ceremony</h1>
-            
-            <div class="separator-line"></div>
+            <div class="text-content-wrapper">
+                <p class="family-name">The Armah Family</p>
+                <h1>Christening<br>Ceremony</h1>
+                <div class="separator-line"></div>
+            </div>
         </header>
 
         <main class="program-list" id="program-container">
             </main>
 
         <footer>
-            <p>The Armah Family &copy; 2026</p>
+            <div class="text-content-wrapper" style="animation-delay: 3.2s;">
+             <p>With Love & Gratitude &copy; 2026</p>
+            </div>
         </footer>
     </div>
 
@@ -264,11 +353,12 @@
 
             container.appendChild(slot);
 
-            // Elegant delayed fade-in
+            // DELAY INCREASED: To allow header animations to finish first
+            const baseDelay = 3000; // Wait 3 seconds before starting list
             setTimeout(() => {
                 slot.style.opacity = '1';
                 slot.style.transform = 'translateY(0)';
-            }, index * 120); 
+            }, baseDelay + (index * 150)); 
         });
     </script>
 </body>
