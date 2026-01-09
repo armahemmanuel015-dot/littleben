@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Christening Program</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS Variables & Colors --- */
+        /* These colors are simulating the soft palette from your requested "image 2".
+           Change these hex codes to match your actual image colors. */
+        :root {
+            --primary-color: #8FB8DE;   /* Soft Powder Blue */
+            --secondary-color: #F4E8C1; /* Muted Gold/Cream Accent */
+            --text-dark: #5A6A78;       /* Slate Gray for text */
+            --text-light: #FFFFFF;      /* White */
+            --background-bg: #FDFBF7;   /* Off-white cream background */
+            --card-bg: #FFFFFF;         /* Pure white container */
+        }
+
+        /* --- Basic Reset & Layout --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--background-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px;
+            background-image: radial-gradient(circle at center, var(--secondary-color) 0%, var(--background-bg) 70%);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(143, 184, 222, 0.2);
+            overflow: hidden;
+            border: 2px solid var(--secondary-color);
+        }
+
+        /* --- Header & Logo Section --- */
+        header {
+            text-align: center;
+            padding: 40px 20px 20px 20px;
+            background: linear-gradient(to bottom, #ffffff 0%, var(--background-bg) 100%);
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        /* CSS Placeholder for Logo */
+        .logo-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px auto;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 4px solid var(--secondary-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* SVG Icon inside placeholder */
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            fill: var(--secondary-color);
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .sub-header {
+             font-weight: 300;
+             font-style: italic;
+             color: var(--text-dark);
+        }
+
+        /* --- Timeline Content --- */
+        .program-content {
+            padding: 40px 30px;
+        }
+
+        /* The Timeline Item Structure */
+        .timeline-item {
+            display: flex;
+            padding-bottom: 25px;
+            position: relative;
+        }
+
+        /* The Vertical Connector Line */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 95px; /* Adjust based on time-box width */
+            top: 15px;
+            height: 100%;
+            width: 2px;
+            background-color: var(--secondary-color);
+            z-index: 0;
+        }
+
+        /* Hides line on last item */
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        /* Time Display */
+        .time-box {
+            min-width: 85px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: right;
+            padding-right: 25px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        /* The Dot on the timeline */
+        .time-box::after {
+            content: '';
+            position: absolute;
+            right: -6px; /* Centers dot on the connector line */
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background-color: var(--primary-color);
+            border: 3px solid var(--secondary-color);
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Event Details */
+        .event-box {
+            flex-grow: 1;
+            padding-left: 25px;
+            background-color: #fff;
+            padding-top: 2px;
+        }
+
+        .event-box h3 {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 480px) {
+             h1 { font-size: 1.8rem; }
+            .container { margin: 20px auto; }
+            .timeline-item::before { left: 80px; }
+            .time-box { min-width: 70px; padding-right: 20px; font-size: 0.8rem;}
+            .event-box { padding-left: 20px; }
+            .event-box h3 { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+               <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/><path fill="none" d="M0 0h24v24H0z"/></svg>
+            </div>
+            <h1>Christening Ceremony</h1>
+            <p class="sub-header">Welcome to our special day</p>
+        </header>
+
+        <main class="program-content" id="timeline-container">
+           </main>
+
+        <footer>
+            <p>Thank you for celebrating with us.</p>
+        </footer>
+    </div>
+
+
+    <script>
+        // --- Data Source ---
+        // This array holds the program details. It's easy to edit here.
+        const programEvents = [
+            { time: "09:00 AM", title: "Arrival of Guests" },
+            { time: "09:15 AM", title: "Opening Prayer" },
+            { time: "09:20 AM", title: "Introduction of Chairperson" },
+            { time: "09:30 AM", title: "Purpose of Gathering" },
+            { time: "09:45 AM", title: "Presentation of Gifts (Traditional)" },
+            { time: "10:00 AM", title: "Dedication to the Lord", highlight: true }, // Added a highlight property for emphasis
+            { time: "10:30 AM", title: "Gift Presentation from Friends and Family" },
+            { time: "11:00 AM", title: "Vote of Thanks / Closing Prayer" },
+            { time: "11:15 AM", title: "Photo Session & Refreshments" }
+        ];
+
+        // --- Javascript Functionality ---
+        const timelineContainer = document.getElementById('timeline-container');
+
+        // Function to create HTML structure for a single timeline item
+        function createTimelineItem(item, index) {
+            // 1. Create main item container
+            const itemWrapper = document.createElement('div');
+            itemWrapper.classList.add('timeline-item');
+
+            // Subtle animation delay for a nice loading effect
+            itemWrapper.style.animation = `fadeInUp 0.5s ease forwards ${index * 0.1}s`;
+            itemWrapper.style.opacity = '0'; // Start invisible for animation
+
+            // 2. Create the time section (left side)
+            const timeDiv = document.createElement('div');
+            timeDiv.classList.add('time-box');
+            timeDiv.textContent = item.time;
+
+            // 3. Create the event details section (right side)
+            const eventDiv = document.createElement('div');
+            eventDiv.classList.add('event-box');
+            
+            const titleH3 = document.createElement('h3');
+            titleH3.textContent = item.title;
+            
+            // Optional: change style if it's a highlighted event
+            if (item.highlight) {
+                titleH3.style.color = "var(--primary-color)";
+                titleH3.style.fontWeight = "bold";
+                titleH3.style.fontSize = "1.2rem";
+            }
+
+            // Assemble the pieces
+            eventDiv.appendChild(titleH3);
+            itemWrapper.appendChild(timeDiv);
+            itemWrapper.appendChild(eventDiv);
+
+            return itemWrapper;
+        }
+
+        // Function to populate the list
+        function generateProgram() {
+            programEvents.forEach((event, index) => {
+                const eventHTML = createTimelineItem(event, index);
+                timelineContainer.appendChild(eventHTML);
+            });
+        }
+
+        // Add a simple fade-in animation in CSS to support the JS
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        // Run the generation function on load
+        generateProgram();
+
+    </script>
+</body>
+</html>
