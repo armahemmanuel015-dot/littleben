@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Christening Ceremony</title>
+    <title>The Armah Christening</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
@@ -37,17 +37,17 @@
         /* --- THE CARD CONTAINER --- */
         .luxury-card {
             width: 100%;
-            max-width: 550px; /* Narrower width suggests exclusivity */
+            max-width: 550px; 
             background-color: var(--navy-light);
-            border: 1px solid var(--gold-leaf); /* Thin gold border */
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); /* Deep shadow */
+            border: 1px solid var(--gold-leaf); 
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); 
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        /* Decorative Gold Corners (CSS only) */
+        /* Decorative Gold Corners */
         .corner-decor {
             position: absolute;
             width: 20px;
@@ -55,56 +55,62 @@
             border: 2px solid var(--gold-leaf);
             z-index: 10;
         }
-        .top-left { top: 10px; left: 10px; border-right: none; border-bottom: none; }
-        .top-right { top: 10px; right: 10px; border-left: none; border-bottom: none; }
-        .bottom-left { bottom: 10px; left: 10px; border-right: none; border-top: none; }
-        .bottom-right { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+        .top-left { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+        .top-right { top: 12px; right: 12px; border-left: none; border-bottom: none; }
+        .bottom-left { bottom: 12px; left: 12px; border-right: none; border-top: none; }
+        .bottom-right { bottom: 12px; right: 12px; border-left: none; border-top: none; }
 
         /* --- HEADER SECTION --- */
         header {
             text-align: center;
-            padding: 60px 40px 40px 40px;
+            padding: 70px 40px 40px 40px;
             position: relative;
         }
 
+        /* The Family Crest / Monogram */
         .monogram {
             font-family: 'Playfair Display', serif;
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: var(--gold-leaf);
-            border: 2px solid var(--gold-leaf);
-            width: 80px;
-            height: 80px;
-            line-height: 76px;
+            border: 1px solid var(--gold-leaf);
+            width: 90px;
+            height: 90px;
+            line-height: 86px;
             border-radius: 50%;
             margin: 0 auto 30px auto;
-            background: rgba(212, 175, 55, 0.1); /* Subtle gold tint */
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+        }
+
+        .family-name {
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            font-size: 0.8rem;
+            color: var(--slate-gray);
+            margin-bottom: 10px;
+            font-weight: 500;
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 1.8rem;
+            font-weight: 600; /* Slightly lighter for elegance */
+            font-style: italic;
+            letter-spacing: 1px;
+            font-size: 2.5rem;
             background: linear-gradient(to right, var(--gold-pale), var(--gold-leaf), var(--gold-pale));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            font-family: 'Montserrat', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 0.75rem;
-            color: var(--slate-gray);
+            margin-bottom: 5px;
+            line-height: 1.2;
         }
 
         .separator-line {
-            width: 50px;
-            height: 2px;
+            width: 40px;
+            height: 1px;
             background-color: var(--gold-leaf);
             margin: 30px auto;
+            opacity: 0.6;
         }
 
         /* --- TIMELINE SECTION --- */
@@ -117,31 +123,32 @@
             align-items: flex-start;
             margin-bottom: 35px;
             position: relative;
-            opacity: 0; /* Hidden for JS Animation */
+            opacity: 0; 
             transform: translateY(10px);
-            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         
         /* The Time (Left) */
         .ts-time {
             width: 80px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 500;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
             color: var(--gold-leaf);
             text-align: right;
-            padding-right: 20px;
-            padding-top: 4px;
+            padding-right: 25px;
+            padding-top: 5px;
         }
 
         /* The Divider Line */
         .ts-divider {
             width: 1px;
-            background: linear-gradient(to bottom, var(--gold-leaf) 0%, rgba(212, 175, 55, 0.1) 100%);
+            background: linear-gradient(to bottom, var(--gold-leaf) 0%, rgba(10, 25, 47, 0) 90%);
             position: absolute;
             left: 80px;
-            top: 5px;
+            top: 8px;
             bottom: -40px;
+            opacity: 0.3;
         }
         
         .time-slot:last-child .ts-divider {
@@ -151,14 +158,15 @@
         /* The Diamond Marker */
         .ts-marker {
             position: absolute;
-            left: 77px; /* Aligned with divider */
-            top: 7px;
+            left: 77px; 
+            top: 8px;
             width: 7px;
             height: 7px;
             background-color: var(--royal-navy);
             border: 1px solid var(--gold-leaf);
             transform: rotate(45deg);
             z-index: 2;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
         }
 
         /* The Event (Right) */
@@ -169,7 +177,7 @@
 
         .ts-event h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 400;
             color: var(--paper-white);
             margin-bottom: 4px;
@@ -178,25 +186,25 @@
         /* Highlight specific important events */
         .highlight h3 {
             color: var(--gold-leaf);
-            font-style: italic;
+            font-weight: 600;
         }
 
         /* --- FOOTER --- */
         footer {
             text-align: center;
-            padding: 20px;
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-            font-size: 0.7rem;
+            padding: 30px;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            font-size: 0.65rem;
             color: var(--slate-gray);
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         /* Responsive */
         @media(max-width: 480px) {
             body { padding: 0; }
-            .luxury-card { border: none; height: 100vh; max-width: 100%; border-radius: 0;}
-            header { padding: 50px 20px 30px 20px; }
+            .luxury-card { border: none; min-height: 100vh; max-width: 100%; border-radius: 0;}
+            header { padding: 60px 20px 30px 20px; }
             .program-list { padding: 0 20px 80px 20px; }
         }
     </style>
@@ -210,9 +218,11 @@
         <div class="corner-decor bottom-right"></div>
 
         <header>
-            <div class="monogram">C</div>
-            <h1>Christening</h1>
-            <p class="subtitle">Order of Service</p>
+            <div class="monogram">A</div>
+            
+            <p class="family-name">The Armah Family</p>
+            <h1>Christening<br>Ceremony</h1>
+            
             <div class="separator-line"></div>
         </header>
 
@@ -220,7 +230,7 @@
             </main>
 
         <footer>
-            <p>With Gratitude & Grace</p>
+            <p>The Armah Family &copy; 2026</p>
         </footer>
     </div>
 
@@ -231,20 +241,18 @@
             { time: "09:20", title: "Introduction of Chairperson" },
             { time: "09:30", title: "Purpose of Gathering" },
             { time: "09:45", title: "Presentation of Gifts" },
-            { time: "10:00", title: "Dedication to the Lord", highlight: true }, // Highlighted
+            { time: "10:00", title: "Dedication to the Lord", highlight: true }, 
             { time: "10:30", title: "Family & Friends Gifts" },
             { time: "11:00", title: "Vote of Thanks" },
-            { time: "11:15", title: "Reception" }
+            { time: "11:15", title: "Reception & Photos" }
         ];
 
         const container = document.getElementById('program-container');
 
         events.forEach((item, index) => {
-            // Create main container
             const slot = document.createElement('div');
             slot.className = item.highlight ? 'time-slot highlight' : 'time-slot';
             
-            // HTML Structure
             slot.innerHTML = `
                 <div class="ts-time">${item.time}</div>
                 <div class="ts-divider"></div>
@@ -256,11 +264,11 @@
 
             container.appendChild(slot);
 
-            // Staggered Animation Trigger
+            // Elegant delayed fade-in
             setTimeout(() => {
                 slot.style.opacity = '1';
                 slot.style.transform = 'translateY(0)';
-            }, index * 150); // 150ms delay between each item
+            }, index * 120); 
         });
     </script>
 </body>
