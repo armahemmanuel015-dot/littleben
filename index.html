@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Armah Christening</title>
+    
+    <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" type="image/jpeg">
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
@@ -67,19 +70,28 @@
             position: relative;
         }
 
-        /* The Family Crest / Monogram */
+        /* The Logo Container */
         .monogram {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            color: var(--gold-leaf);
+            width: 100px;
+            height: 100px;
             border: 1px solid var(--gold-leaf);
-            width: 90px;
-            height: 90px;
-            line-height: 86px;
             border-radius: 50%;
             margin: 0 auto 30px auto;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+            /* Container styling to hold the image */
+            overflow: hidden; 
+            background: var(--royal-navy);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* The Image inside the Logo */
+        .monogram-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures image covers circle without distortion */
+            display: block;
         }
 
         .family-name {
@@ -94,7 +106,7 @@
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-weight: 600; /* Slightly lighter for elegance */
+            font-weight: 600;
             font-style: italic;
             letter-spacing: 1px;
             font-size: 2.5rem;
@@ -218,7 +230,10 @@
         <div class="corner-decor bottom-right"></div>
 
         <header>
-            <div class="monogram">A</div>
+            <div class="monogram">
+                <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" alt="Logo" class="monogram-img">
+            </div>
+            
             <p class="family-name">The Armah's</p>
             <h1>Christening<br>Ceremony</h1>
             <div class="separator-line"></div>
