@@ -2,297 +2,312 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Armah Christening</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Armah Celebration</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- LUXURY COLOR PALETTE --- */
         :root {
-            --royal-navy: #0a192f;
-            --navy-light: #112240;
-            --gold-leaf: #d4af37;
-            --gold-pale: #f3e5ab;
-            --paper-white: #fdfdfd;
-            --slate-gray: #8892b0;
+            /* --- ETHEREAL PALETTE --- */
+            --bg-color: #FDFCF8;      /* Warm Sand */
+            --accent-gold: #C5A059;   /* Muted Luxury Gold */
+            --accent-rose: #E6D2C4;   /* Soft Rose/Beige */
+            --text-dark: #2A2A2A;     /* Charcoal */
+            --text-light: #666666;    /* Soft Grey */
+            --glass-white: rgba(255, 255, 255, 0.95);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--royal-navy);
-            color: var(--paper-white);
-            display: flex;
-            flex-direction: column; 
-            align-items: center;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-
-        /* --- THE CARD CONTAINER --- */
-        .luxury-card {
-            width: 100%;
-            max-width: 600px;
-            background-color: var(--navy-light);
-            border: 1px solid var(--gold-leaf);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            overflow-x: hidden;
             position: relative;
-            overflow: hidden; 
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 30px;
+            padding-bottom: 100px; /* Space for bottom bar */
         }
 
-        .corner-decor {
+        /* --- BACKGROUND ATMOSPHERE (Floating Particles) --- */
+        .atmosphere {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--gold-leaf);
-            z-index: 10;
-        }
-        .top-left { top: 12px; left: 12px; border-right: none; border-bottom: none; }
-        .top-right { top: 12px; right: 12px; border-left: none; border-bottom: none; }
-        .bottom-left { bottom: 12px; left: 12px; border-right: none; border-top: none; }
-        .bottom-right { bottom: 12px; right: 12px; border-left: none; border-top: none; }
-
-        /* --- HEADER SECTION --- */
-        header {
-            text-align: center;
-            padding: 70px 40px 40px 40px;
-            position: relative;
-        }
-
-        .monogram {
-            width: 110px;
-            height: 110px;
-            border: 1px solid var(--gold-leaf);
+            background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%);
             border-radius: 50%;
-            margin: 0 auto 25px auto;
-            overflow: hidden; 
-            background: var(--royal-navy);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .monogram-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block; 
-        }
-
-        .family-name {
-            font-family: 'Montserrat', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            font-size: 0.9rem;
-            color: var(--slate-gray);
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            font-style: italic;
-            letter-spacing: 1px;
-            font-size: 2.5rem;
-            background: linear-gradient(to right, var(--gold-pale), var(--gold-leaf), var(--gold-pale));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;
-            line-height: 1.2;
-        }
-
-        .separator-line {
-            width: 50px;
-            height: 1px;
-            background-color: var(--gold-leaf);
-            margin: 30px auto;
-            opacity: 0.6;
-        }
-
-        /* --- TIMELINE SECTION --- */
-        .program-list {
-            padding: 0 40px 60px 40px;
-        }
-
-        .time-slot {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 35px;
-            position: relative;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        
-        .ts-time {
-            width: 90px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            color: var(--gold-leaf);
-            text-align: right;
-            padding-right: 25px;
-            padding-top: 5px;
-        }
-
-        .ts-divider {
-            width: 1px;
-            background: linear-gradient(to bottom, var(--gold-leaf) 0%, rgba(10, 25, 47, 0) 90%);
-            position: absolute;
-            left: 90px;
-            top: 8px;
-            bottom: -40px;
             opacity: 0.3;
+            animation: floatUp 20s infinite linear;
         }
-        
-        .time-slot:last-child .ts-divider { display: none; }
 
-        .ts-marker {
-            position: absolute;
-            left: 87px;
-            top: 8px;
-            width: 7px;
-            height: 7px;
-            background-color: var(--royal-navy);
-            border: 1px solid var(--gold-leaf);
-            transform: rotate(45deg);
+        /* --- HERO SECTION --- */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 40px 20px;
+            background: linear-gradient(to bottom, #fff 0%, var(--bg-color) 100%);
+        }
+
+        .logo-wrapper {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 30px auto;
+            position: relative;
+        }
+
+        .logo-img {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.2);
+            position: relative;
             z-index: 2;
         }
 
-        .ts-event { flex: 1; padding-left: 25px; }
-
-        .ts-event h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: var(--paper-white);
-            margin-bottom: 4px;
-        }
-        
-        .highlight h3 { color: var(--gold-leaf); font-weight: 600; }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            border-top: 1px solid rgba(212, 175, 55, 0.1);
-            font-size: 0.7rem;
-            color: var(--slate-gray);
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        /* Spinning Ring around Logo */
+        .logo-ring {
+            position: absolute;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border: 1px dashed var(--accent-gold);
+            border-radius: 50%;
+            animation: spin 30s linear infinite;
+            z-index: 1;
         }
 
-        /* --- BUTTON STYLE --- */
-        /* Changed to 'a' tag styling */
-        .download-btn {
-            background-color: transparent;
-            color: var(--gold-leaf);
-            border: 1px solid var(--gold-leaf);
-            padding: 15px 30px;
-            font-family: 'Montserrat', sans-serif;
+        .hero h2 {
+            font-family: 'Lato', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
             font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #2A2A2A, #555);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .separator {
+            width: 60px;
+            height: 1px;
+            background: var(--accent-gold);
+            margin: 20px auto;
+            opacity: 0.5;
+        }
+
+        /* --- THE PROGRAM (Journey) --- */
+        .timeline-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 20px 40px 20px;
+            position: relative;
+        }
+
+        /* The Vertical Line */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 50px;
+            top: 40px;
+            bottom: 40px;
+            width: 1px;
+            background: linear-gradient(to bottom, var(--accent-gold), transparent);
+            opacity: 0.3;
+        }
+
+        .event-card {
             display: flex;
             align-items: center;
-            gap: 10px;
-            text-decoration: none; /* Removes underline from link */
+            margin-bottom: 30px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
         }
 
-        .download-btn:hover {
-            background-color: var(--gold-leaf);
-            color: var(--royal-navy);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        .event-time-badge {
+            width: 60px;
+            text-align: right;
+            padding-right: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--accent-gold);
+            z-index: 2;
+            background: var(--bg-color); /* Hides line behind it */
         }
 
-        @media(max-width: 480px) {
-            body { padding: 0; padding-bottom: 40px;}
-            .luxury-card { border: none; min-height: 100vh; max-width: 100%; border-radius: 0; box-shadow: none;}
-            header { padding: 60px 20px 30px 20px; }
-            .program-list { padding: 0 20px 80px 20px; }
-            .download-btn { margin-bottom: 40px; }
-            .ts-time { width: 70px; padding-right: 15px; }
-            .ts-divider { left: 70px; }
-            .ts-marker { left: 67px; }
+        .event-marker {
+            width: 12px;
+            height: 12px;
+            background: var(--bg-color);
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            position: absolute;
+            left: 44.5px; /* Center on the line */
+            z-index: 3;
+            box-shadow: 0 0 0 4px var(--bg-color);
         }
+        
+        .highlight .event-marker {
+            background: var(--accent-gold);
+            box-shadow: 0 0 0 4px var(--accent-rose);
+        }
+
+        .event-detail {
+            flex: 1;
+            margin-left: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border-left: 3px solid var(--accent-rose);
+            transition: transform 0.3s;
+        }
+
+        .highlight .event-detail {
+            border-left: 3px solid var(--accent-gold);
+            background: linear-gradient(to right, #fff, #FFFDF5);
+        }
+
+        .event-detail h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            margin-bottom: 0;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        /* --- ACTION BAR (Floating Bottom) --- */
+        .action-bar {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .btn {
+            width: 100%;
+            max-width: 300px;
+            padding: 15px;
+            border-radius: 50px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--text-dark);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:active { transform: scale(0.98); }
+
+        /* Animations */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="luxury-card" id="card-element">
-        <div class="corner-decor top-left"></div>
-        <div class="corner-decor top-right"></div>
-        <div class="corner-decor bottom-left"></div>
-        <div class="corner-decor bottom-right"></div>
+    <div class="atmosphere" id="atmosphere"></div>
 
-        <header>
-            <div class="monogram">
-                <img id="logo-img" src="" alt="The Armah Logo" class="monogram-img">
-            </div>
-            
-            <p class="family-name">The Armah's</p>
-            <h1>Christening<br>Ceremony</h1>
-            <div class="separator-line"></div>
-        </header>
+    <header class="hero">
+        <div class="logo-wrapper">
+            <div class="logo-ring"></div>
+            <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" class="logo-img" alt="Logo">
+        </div>
+        
+        <h2>The Armah Family</h2>
+        <h1>Christening<br>Celebration</h1>
+        <div class="separator"></div>
+    </header>
 
-        <main class="program-list" id="program-container">
-            </main>
+    <div class="timeline-container" id="timeline">
+        </div>
 
-        <footer>
-            <p>The Armah Family &copy; 2026</p>
-        </footer>
+    <div class="action-bar">
+        <a href="https://drive.google.com/file/d/19l3yKNH8b3VrP_C14offs9bObkGfpRHl/view?usp=sharing" target="_blank" class="btn btn-primary">
+            Download PDF Program
+        </a>
     </div>
 
-    <a class="download-btn" href="https://drive.google.com/file/d/1HEVRM-Rd0zJLmaRhwS5QaMLOZYWJW7yD/view?usp=sharing" target="_blank">
-        <span>Download Program PDF</span>
-    </a>
-
     <script>
-        // Set Logo
-        document.getElementById('logo-img').src = "https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002";
+        // --- 1. GENERATE FLOATING PARTICLES ---
+        const atm = document.getElementById('atmosphere');
+        for(let i=0; i<20; i++) {
+            let p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.width = (Math.random() * 50 + 10) + 'px';
+            p.style.height = p.style.width;
+            p.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            p.style.animationDelay = (Math.random() * 5) + 's';
+            atm.appendChild(p);
+        }
 
+        // --- 2. POPULATE TIMELINE (ORIGINAL OUTLINE) ---
         const events = [
             { time: "09:00", title: "Arrival of Guests" },
             { time: "09:15", title: "Opening Prayer" },
             { time: "09:20", title: "Introduction of Chairperson" },
             { time: "09:30", title: "Purpose of Gathering" },
-            { time: "09:45", title: "Presentation of Gifts" },
+            { time: "09:45", title: "Presentation of Gifts (Traditional)" },
             { time: "10:00", title: "Dedication to the Lord", highlight: true },
-            { time: "10:30", title: "Family & Friends Gifts" },
-            { time: "11:00", title: "Vote of Thanks" },
-            { time: "11:15", title: "Reception & Photos" }
+            { time: "10:30", title: "Gift Presentation from Friends & Family" },
+            { time: "11:00", title: "Vote of Thanks / Closing Prayer" },
+            { time: "11:15", title: "Photo Session & Refreshments" }
         ];
 
-        const container = document.getElementById('program-container');
+        const timeline = document.getElementById('timeline');
 
         events.forEach((item, index) => {
-            const slot = document.createElement('div');
-            slot.className = item.highlight ? 'time-slot highlight' : 'time-slot';
+            const el = document.createElement('div');
+            el.className = item.highlight ? 'event-card highlight' : 'event-card';
+            // Scroll Animation Trigger Delay
+            el.style.transitionDelay = (index * 0.1) + 's';
             
-            slot.innerHTML = `
-                <div class="ts-time">${item.time}</div>
-                <div class="ts-divider"></div>
-                <div class="ts-marker"></div>
-                <div class="ts-event">
+            el.innerHTML = `
+                <div class="event-time-badge">${item.time}</div>
+                <div class="event-marker"></div>
+                <div class="event-detail">
                     <h3>${item.title}</h3>
                 </div>
             `;
-
-            container.appendChild(slot);
-
+            timeline.appendChild(el);
+            
+            // Trigger animation after load
             setTimeout(() => {
-                slot.style.opacity = '1';
-                slot.style.transform = 'translateY(0)';
-            }, index * 120);
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 100);
         });
     </script>
 </body>
