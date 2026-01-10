@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Armah Christening</title>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
@@ -45,16 +43,6 @@
             display: flex;
             flex-direction: column;
             margin-bottom: 30px;
-        }
-
-        /* --- PDF SPECIFIC STYLES --- */
-        .pdf-mode {
-            width: 800px !important;
-            max-width: 800px !important;
-            margin: 0 !important;
-            border: 2px solid var(--gold-leaf) !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
         }
 
         .corner-decor {
@@ -119,12 +107,6 @@
             margin-bottom: 5px;
             line-height: 1.2;
         }
-        
-        .pdf-mode h1 {
-            background: none;
-            color: var(--gold-leaf);
-            -webkit-text-fill-color: var(--gold-leaf);
-        }
 
         .separator-line {
             width: 50px;
@@ -147,12 +129,6 @@
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-            page-break-inside: avoid; 
-        }
-
-        .pdf-mode .time-slot {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
         }
         
         .ts-time {
@@ -212,6 +188,8 @@
             text-transform: uppercase;
         }
 
+        /* --- BUTTON STYLE --- */
+        /* Changed to 'a' tag styling */
         .download-btn {
             background-color: transparent;
             color: var(--gold-leaf);
@@ -227,6 +205,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            text-decoration: none; /* Removes underline from link */
         }
 
         .download-btn:hover {
@@ -273,18 +252,12 @@
         </footer>
     </div>
 
-    <button class="download-btn" onclick="generatePDF()">
+    <a class="download-btn" href="https://drive.google.com/file/d/1HEVRM-Rd0zJLmaRhwS5QaMLOZYWJW7yD/view?usp=sharing" target="_blank">
         <span>Download Program PDF</span>
-    </button>
+    </a>
 
     <script>
-        // --- 1. SET THE LOGO URL HERE ---
-        // Since we can't reliably base64 encode a dynamic URL without a server proxy due to CORS,
-        // we will use the standard img tag but with a trick in the PDF generator.
-        // If this still fails, you must download the image, convert it to base64 online (sites like base64-image.de),
-        // and paste the long string here.
-        
-        // For now, let's try the standard way but with the 'allowTaint' flag strictly enabled in the PDF section.
+        // Set Logo
         document.getElementById('logo-img').src = "https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002";
 
         const events = [
@@ -321,49 +294,6 @@
                 slot.style.transform = 'translateY(0)';
             }, index * 120);
         });
-
-        // --- IMPROVED PDF ENGINE ---
-        function generatePDF() {
-            const element = document.getElementById('card-element');
-            const btn = document.querySelector('.download-btn');
-
-            // 1. Force Styling for Print
-            element.classList.add('pdf-mode');
-            btn.innerHTML = "Generating...";
-
-            // 2. Setup Options
-            const opt = {
-                margin:       [0.5, 0.5, 0.5, 0.5], 
-                filename:     'The_Armah_Christening.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                
-                html2canvas:  { 
-                    scale: 2, 
-                    // KEY FIXES FOR IMAGES:
-                    useCORS: true,       // Try to fetch cross-origin
-                    allowTaint: true,    // Allow "tainted" (external) images to be drawn
-                    logging: true,       // Helpful for debugging
-                    windowWidth: 800
-                },
-                
-                jsPDF: { 
-                    unit: 'in', 
-                    format: 'letter', 
-                    orientation: 'portrait' 
-                }
-            };
-
-            // 3. Generate
-            html2pdf().set(opt).from(element).save().then(() => {
-                element.classList.remove('pdf-mode');
-                btn.innerHTML = "Download Program PDF";
-            }).catch(err => {
-                console.error(err);
-                alert("If the logo is still missing, it is a strict security policy on your image server. The only fix is to download the image, convert it to Base64, and paste the code directly.");
-                element.classList.remove('pdf-mode');
-                btn.innerHTML = "Download Program PDF";
-            });
-        }
     </script>
 </body>
 </html>
