@@ -3,87 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Armah Christening | Royal Edition</title>
+    <title>The Armah Christening | Botanical Edition</title>
     
-    <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" type="image/jpeg">
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Deep, Rich Navy Background */
-            --bg-gradient: radial-gradient(circle at center, #112240 0%, #0a192f 100%);
-            --card-bg: #0e1c33;
-            
-            /* The "Real Gold" Gradient Palette */
-            --gold-metal: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            --gold-flat: #d4af37;
-            
-            --text-white: #ffffff;
-            --text-muted: #8892b0;
+            /* --- ORGANIC PALETTE --- */
+            --sage-dark: #4A675F;
+            --sage-light: #8CA89F;
+            --sand: #D9C8B4;
+            --cream: #F9F7F2;
+            --text-main: #2C3E36;
+            --white-glass: rgba(255, 255, 255, 0.85);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg-gradient);
-            color: var(--text-white);
+            font-family: 'Jost', sans-serif;
+            background-color: #F0EBE5;
+            /* Soft Organic Gradient Background */
+            background-image: 
+                radial-gradient(circle at 0% 0%, #D9C8B4 0%, transparent 50%), 
+                radial-gradient(circle at 100% 100%, #8CA89F 0%, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
             padding: 40px 20px;
         }
 
-        /* --- THE LUXURY CARD --- */
-        .royal-card {
-            position: relative;
+        /* --- THE CARD (Frosted Glass Look) --- */
+        .botanical-card {
             width: 100%;
             max-width: 500px;
-            background-color: var(--card-bg);
-            border-radius: 4px; /* Sharp, clean corners */
-            
-            /* The Metallic Gold Border Effect */
-            padding: 3px; /* Creates space for the gradient border */
-            background-image: var(--gold-metal);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            
+            background: var(--white-glass);
+            backdrop-filter: blur(10px); /* Blurs the background behind card */
+            border-radius: 30px; /* Softer, organic corners */
+            padding: 50px 30px;
+            box-shadow: 
+                0 20px 40px rgba(74, 103, 95, 0.1),
+                0 0 0 1px rgba(255,255,255, 0.5); /* Subtle white border */
+            text-align: center;
+            position: relative;
             margin-bottom: 30px;
             overflow: hidden;
         }
 
-        .inner-content {
-            background-color: var(--card-bg); /* Covers the middle so only border shows */
-            height: 100%;
-            padding: 60px 30px;
-            position: relative;
-        }
-
-        /* Decorative Corners */
-        .corner-accent {
+        /* Decorative top accent */
+        .card-accent {
             position: absolute;
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            z-index: 1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--sage-light), var(--sand), var(--sage-light));
         }
-        .tl { top: 15px; left: 15px; border-right: none; border-bottom: none; }
-        .tr { top: 15px; right: 15px; border-left: none; border-bottom: none; }
-        .bl { bottom: 15px; left: 15px; border-right: none; border-top: none; }
-        .br { bottom: 15px; right: 15px; border-left: none; border-top: none; }
 
         /* --- HEADER --- */
-        header { text-align: center; margin-bottom: 50px; }
-
-        .logo-frame {
-            width: 110px;
-            height: 110px;
-            margin: 0 auto 25px auto;
-            border-radius: 50%;
-            padding: 3px; /* Gold rim thickness */
-            background: var(--gold-metal); /* Metallic Rim */
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+        .logo-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px auto;
+            position: relative;
         }
 
         .logo-img {
@@ -91,223 +75,209 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--card-bg); /* Separation line */
-            display: block;
+            border: 3px solid var(--white-glass);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Subtle Leaf Icon behind logo */
+        .logo-leaf {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 40px;
+            height: 40px;
+            fill: var(--sage-dark);
+            opacity: 0.8;
+            transform: rotate(20deg);
         }
 
-        .family-label {
-            font-family: 'Montserrat', sans-serif;
+        h2 {
+            font-family: 'Jost', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 6px;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-            font-weight: 500;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            color: var(--sage-dark);
+            margin-bottom: 5px;
+            font-weight: 600;
         }
 
         h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.8rem;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            
-            /* Metallic Text Effect */
-            background: var(--gold-metal);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            color: var(--text-main);
+            font-weight: 500;
+            line-height: 0.9;
+            margin-bottom: 30px;
             font-style: italic;
-        }
-
-        .divider {
-            height: 1px;
-            width: 60px;
-            background: var(--gold-metal);
-            margin: 0 auto;
-            opacity: 0.7;
         }
 
         /* --- TIMELINE --- */
         .timeline {
+            text-align: left;
             position: relative;
             padding-left: 10px;
         }
 
-        .event-row {
+        .event-item {
             display: flex;
-            margin-bottom: 35px;
+            align-items: center;
+            margin-bottom: 25px;
             opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s forwards;
+            transform: translateY(10px);
+            animation: slideUp 0.6s ease forwards;
         }
 
-        .time-col {
-            width: 85px;
-            text-align: right;
-            padding-right: 20px;
-            font-size: 0.85rem;
-            color: var(--gold-flat);
+        .time {
+            font-family: 'Jost', sans-serif;
             font-weight: 500;
-            padding-top: 4px;
+            font-size: 0.85rem;
+            color: var(--sage-dark);
+            width: 75px;
+            text-align: right;
+            padding-right: 15px;
         }
 
-        .marker-col {
-            width: 20px;
-            position: relative;
+        .marker-container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 15px;
+            height: 100%;
         }
 
-        /* The Vertical Gold Line */
-        .line {
-            position: absolute;
-            top: 8px;
-            bottom: -45px;
-            width: 1px;
-            background: linear-gradient(to bottom, var(--gold-flat), rgba(10, 25, 47, 0));
-        }
-        
-        /* Remove line for last item */
-        .event-row:last-child .line { display: none; }
-
-        /* The Diamond Dot */
         .dot {
-            width: 9px;
-            height: 9px;
-            background: var(--card-bg);
-            border: 1px solid var(--gold-flat);
-            transform: rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background-color: var(--sand);
+            border-radius: 50%;
             z-index: 2;
-            margin-top: 7px;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
-        }
-
-        .info-col {
-            flex: 1;
-            padding-left: 15px;
-        }
-
-        .info-col h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: #fff;
-            line-height: 1.3;
         }
         
-        /* Highlight Special Events */
-        .highlight h3 {
-            color: #fcf6ba; /* Lighter gold */
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        .highlight .dot {
+            background-color: var(--sage-dark);
+            box-shadow: 0 0 0 3px rgba(74, 103, 95, 0.2);
+            transform: scale(1.2);
+        }
+
+        .details h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
             font-weight: 600;
+            color: var(--text-main);
+        }
+        
+        .highlight .details h3 {
+            color: var(--sage-dark);
+            font-style: italic;
         }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER & BUTTON --- */
         footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            margin-top: 40px;
+            border-top: 1px dashed var(--sand);
+            padding-top: 20px;
+            font-size: 0.75rem;
+            color: var(--sage-dark);
+            letter-spacing: 1px;
         }
 
-        /* --- BUTTON --- */
-        .gold-btn {
+        .eco-btn {
             display: inline-block;
+            background-color: var(--sage-dark);
+            color: #fff;
             text-decoration: none;
-            background: var(--gold-metal);
-            color: #0e1c33; /* Dark text on gold button */
-            padding: 18px 40px;
+            padding: 18px 45px;
             border-radius: 50px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-size: 0.8rem;
-            box-shadow: 0 10px 20px rgba(189, 149, 63, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid #fff; /* Slight inner border look */
+            font-family: 'Jost', sans-serif;
+            letter-spacing: 1px;
+            font-weight: 500;
+            box-shadow: 0 10px 20px rgba(74, 103, 95, 0.25);
+            transition: all 0.3s ease;
         }
 
-        .gold-btn:hover {
+        .eco-btn:hover {
+            background-color: var(--sage-light);
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(189, 149, 63, 0.5);
+            box-shadow: 0 15px 25px rgba(74, 103, 95, 0.3);
         }
 
         /* Animations */
-        @keyframes fadeInUp {
+        @keyframes slideUp {
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Decorative Leaf SVG at bottom corner */
+        .bg-leaf {
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            width: 150px;
+            opacity: 0.05;
+            z-index: 0;
+            pointer-events: none;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="royal-card">
-        <div class="inner-content">
-            <div class="corner-accent tl"></div>
-            <div class="corner-accent tr"></div>
-            <div class="corner-accent bl"></div>
-            <div class="corner-accent br"></div>
+    <div class="botanical-card">
+        <div class="card-accent"></div>
+        
+        <svg class="bg-leaf" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
 
-            <header>
-                <div class="logo-frame">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" class="logo-img" alt="Armah Family Logo">
-                </div>
+        <header>
+            <div class="logo-container">
+                <svg class="logo-leaf" viewBox="0 0 24 24"><path d="M12,2C12,2 12,2 12,2C12,2 14,4 16,8C18,12 16,18 12,22C8,18 6,12 8,8C10,4 12,2 12,2Z"/></svg>
                 
-                <p class="family-label">The Armah Family</p>
-                <h1>Christening<br>Ceremony</h1>
-                <div class="divider"></div>
-            </header>
+                <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" class="logo-img" alt="Logo">
+            </div>
+            <h2>The Armah Family</h2>
+            <h1>Christening</h1>
+        </header>
 
-            <div class="timeline" id="timeline-container">
-                </div>
+        <div class="timeline" id="timeline-list">
+            </div>
 
-            <footer>
-                <p>With Gratitude & Love &copy; 2026</p>
-            </footer>
-        </div>
+        <footer>
+            <p>Celebration of New Life &copy; 2026</p>
+        </footer>
     </div>
 
-    <a href="https://drive.google.com/file/d/1HEVRM-Rd0zJLmaRhwS5QaMLOZYWJW7yD/view?usp=sharing" target="_blank" class="gold-btn">
-        Download Program PDF
+    <a href="https://drive.google.com/file/d/1HEVRM-Rd0zJLmaRhwS5QaMLOZYWJW7yD/view?usp=sharing" target="_blank" class="eco-btn">
+        Download PDF Program
     </a>
 
     <script>
         const events = [
             { time: "09:00", title: "Arrival of Guests" },
             { time: "09:15", title: "Opening Prayer" },
-            { time: "09:20", title: "Intro of Chairperson" },
+            { time: "09:20", title: "Welcome Address" },
             { time: "09:30", title: "Purpose of Gathering" },
-            { time: "09:45", title: "Presentation of Gifts" },
-            { time: "10:00", title: "Dedication to the Lord", highlight: true },
+            { time: "09:45", title: "Gift Presentation" },
+            { time: "10:00", title: "Dedication to God", highlight: true },
             { time: "10:30", title: "Family & Friends Gifts" },
             { time: "11:00", title: "Vote of Thanks" },
-            { time: "11:15", title: "Reception & Photos" }
+            { time: "11:15", title: "Photos & Reception" }
         ];
 
-        const container = document.getElementById('timeline-container');
+        const list = document.getElementById('timeline-list');
 
         events.forEach((item, index) => {
-            const row = document.createElement('div');
-            row.className = item.highlight ? 'event-row highlight' : 'event-row';
+            const div = document.createElement('div');
+            div.className = item.highlight ? 'event-item highlight' : 'event-item';
+            div.style.animationDelay = (index * 0.1) + 's';
             
-            // Staggered Animation Delay
-            row.style.animationDelay = (index * 0.15) + 's';
-
-            row.innerHTML = `
-                <div class="time-col">${item.time}</div>
-                <div class="marker-col">
+            div.innerHTML = `
+                <div class="time">${item.time}</div>
+                <div class="marker-container">
                     <div class="dot"></div>
-                    <div class="line"></div>
                 </div>
-                <div class="info-col">
+                <div class="details">
                     <h3>${item.title}</h3>
                 </div>
             `;
-            container.appendChild(row);
+            list.appendChild(div);
         });
     </script>
 </body>
