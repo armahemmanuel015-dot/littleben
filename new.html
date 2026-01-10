@@ -2,283 +2,376 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Armah Christening | Botanical Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Armah Celebration</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* --- ORGANIC PALETTE --- */
-            --sage-dark: #4A675F;
-            --sage-light: #8CA89F;
-            --sand: #D9C8B4;
-            --cream: #F9F7F2;
-            --text-main: #2C3E36;
-            --white-glass: rgba(255, 255, 255, 0.85);
+            /* Warm, Ethereal Palette */
+            --bg-color: #FDFCF8;
+            --accent-gold: #C5A059;
+            --accent-rose: #E6D2C4;
+            --text-dark: #2A2A2A;
+            --text-light: #666666;
+            --glass-white: rgba(255, 255, 255, 0.9);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Jost', sans-serif;
-            background-color: #F0EBE5;
-            /* Soft Organic Gradient Background */
-            background-image: 
-                radial-gradient(circle at 0% 0%, #D9C8B4 0%, transparent 50%), 
-                radial-gradient(circle at 100% 100%, #8CA89F 0%, transparent 50%);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* --- THE CARD (Frosted Glass Look) --- */
-        .botanical-card {
-            width: 100%;
-            max-width: 500px;
-            background: var(--white-glass);
-            backdrop-filter: blur(10px); /* Blurs the background behind card */
-            border-radius: 30px; /* Softer, organic corners */
-            padding: 50px 30px;
-            box-shadow: 
-                0 20px 40px rgba(74, 103, 95, 0.1),
-                0 0 0 1px rgba(255,255,255, 0.5); /* Subtle white border */
-            text-align: center;
-            position: relative;
-            margin-bottom: 30px;
+        /* --- BACKGROUND ATMOSPHERE (Floating Particles) --- */
+        .atmosphere {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
             overflow: hidden;
         }
-
-        /* Decorative top accent */
-        .card-accent {
+        
+        .particle {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(90deg, var(--sage-light), var(--sand), var(--sage-light));
+            background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: floatUp 15s infinite linear;
         }
 
-        /* --- HEADER --- */
-        .logo-container {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px auto;
+        /* --- HERO SECTION --- */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px 20px;
+            background: linear-gradient(to bottom, #fff 0%, var(--bg-color) 100%);
+        }
+
+        .logo-wrapper {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 25px auto;
             position: relative;
         }
 
         .logo-img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid var(--white-glass);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        /* Subtle Leaf Icon behind logo */
-        .logo-leaf {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 40px;
-            height: 40px;
-            fill: var(--sage-dark);
-            opacity: 0.8;
-            transform: rotate(20deg);
+            border: 4px solid #fff;
+            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.2);
+            position: relative;
+            z-index: 2;
         }
 
-        h2 {
-            font-family: 'Jost', sans-serif;
+        /* Spinning Ring around Logo */
+        .logo-ring {
+            position: absolute;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border: 1px dashed var(--accent-gold);
+            border-radius: 50%;
+            animation: spin 30s linear infinite;
+            z-index: 1;
+        }
+
+        .hero h2 {
+            font-family: 'Lato', sans-serif;
             text-transform: uppercase;
             letter-spacing: 4px;
             font-size: 0.8rem;
-            color: var(--sage-dark);
-            margin-bottom: 5px;
-            font-weight: 600;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
         }
 
-        h1 {
-            font-family: 'Cormorant Garamond', serif;
+        .hero h1 {
+            font-family: 'Cinzel', serif;
             font-size: 3rem;
-            color: var(--text-main);
-            font-weight: 500;
-            line-height: 0.9;
-            margin-bottom: 30px;
-            font-style: italic;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #2A2A2A, #555);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* --- TIMELINE --- */
-        .timeline {
-            text-align: left;
-            position: relative;
-            padding-left: 10px;
-        }
-
-        .event-item {
+        /* --- COUNTDOWN TIMER --- */
+        .countdown-box {
             display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-            opacity: 0;
-            transform: translateY(10px);
-            animation: slideUp 0.6s ease forwards;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px auto;
+            max-width: 400px;
         }
 
-        .time {
-            font-family: 'Jost', sans-serif;
-            font-weight: 500;
-            font-size: 0.85rem;
-            color: var(--sage-dark);
-            width: 75px;
-            text-align: right;
-            padding-right: 15px;
-        }
-
-        .marker-container {
+        .cd-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-right: 15px;
-            height: 100%;
+            background: #fff;
+            padding: 10px;
+            min-width: 70px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-bottom: 2px solid var(--accent-gold);
         }
 
-        .dot {
-            width: 10px;
-            height: 10px;
-            background-color: var(--sand);
-            border-radius: 50%;
-            z-index: 2;
-        }
-        
-        .highlight .dot {
-            background-color: var(--sage-dark);
-            box-shadow: 0 0 0 3px rgba(74, 103, 95, 0.2);
-            transform: scale(1.2);
-        }
-
-        .details h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
+        .cd-number {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
             font-weight: 600;
-            color: var(--text-main);
+            color: var(--text-dark);
+        }
+
+        .cd-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        /* --- THE PROGRAM (Journey) --- */
+        .timeline-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 20px 80px 20px;
+            position: relative;
+        }
+
+        /* The Vertical Line */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 50px;
+            top: 40px;
+            bottom: 100px;
+            width: 1px;
+            background: linear-gradient(to bottom, var(--accent-gold), transparent);
+            opacity: 0.3;
+        }
+
+        .event-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .event-time-badge {
+            width: 60px;
+            text-align: right;
+            padding-right: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--accent-gold);
+            z-index: 2;
+            background: var(--bg-color); /* Hides line behind it */
+        }
+
+        .event-marker {
+            width: 12px;
+            height: 12px;
+            background: var(--bg-color);
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            position: absolute;
+            left: 44.5px; /* Center on the line */
+            z-index: 3;
+            box-shadow: 0 0 0 4px var(--bg-color);
         }
         
-        .highlight .details h3 {
-            color: var(--sage-dark);
-            font-style: italic;
+        .highlight .event-marker {
+            background: var(--accent-gold);
+            box-shadow: 0 0 0 4px var(--accent-rose);
         }
 
-        /* --- FOOTER & BUTTON --- */
-        footer {
-            margin-top: 40px;
-            border-top: 1px dashed var(--sand);
-            padding-top: 20px;
-            font-size: 0.75rem;
-            color: var(--sage-dark);
-            letter-spacing: 1px;
+        .event-detail {
+            flex: 1;
+            margin-left: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border-left: 3px solid transparent;
+            transition: transform 0.3s;
         }
 
-        .eco-btn {
-            display: inline-block;
-            background-color: var(--sage-dark);
-            color: #fff;
-            text-decoration: none;
-            padding: 18px 45px;
+        .highlight .event-detail {
+            border-left: 3px solid var(--accent-gold);
+            background: linear-gradient(to right, #fff, var(--bg-color));
+        }
+
+        .event-detail h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+
+        .event-detail p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* --- ACTION BAR (Floating Bottom) --- */
+        .action-bar {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            z-index: 100;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .btn {
+            flex: 1;
+            max-width: 250px;
+            padding: 15px;
             border-radius: 50px;
-            font-family: 'Jost', sans-serif;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
             letter-spacing: 1px;
-            font-weight: 500;
-            box-shadow: 0 10px 20px rgba(74, 103, 95, 0.25);
-            transition: all 0.3s ease;
+            transition: transform 0.2s;
         }
 
-        .eco-btn:hover {
-            background-color: var(--sage-light);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(74, 103, 95, 0.3);
+        .btn-primary {
+            background: var(--text-dark);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
+
+        .btn-secondary {
+            background: var(--bg-color);
+            color: var(--text-dark);
+            border: 1px solid #ddd;
+        }
+
+        .btn:active { transform: scale(0.98); }
 
         /* Animations */
-        @keyframes slideUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Decorative Leaf SVG at bottom corner */
-        .bg-leaf {
-            position: absolute;
-            bottom: -30px;
-            right: -30px;
-            width: 150px;
-            opacity: 0.05;
-            z-index: 0;
-            pointer-events: none;
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="botanical-card">
-        <div class="card-accent"></div>
+    <div class="atmosphere" id="atmosphere"></div>
+
+    <header class="hero">
+        <div class="logo-wrapper">
+            <div class="logo-ring"></div>
+            <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" class="logo-img" alt="Logo">
+        </div>
         
-        <svg class="bg-leaf" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+        <h2>The Armah Family</h2>
+        <h1>Christening<br>Celebration</h1>
+        
+        <div class="countdown-box">
+            <div class="cd-item"><span class="cd-number" id="days">00</span><span class="cd-label">Days</span></div>
+            <div class="cd-item"><span class="cd-number" id="hours">00</span><span class="cd-label">Hrs</span></div>
+            <div class="cd-item"><span class="cd-number" id="mins">00</span><span class="cd-label">Mins</span></div>
+        </div>
+    </header>
 
-        <header>
-            <div class="logo-container">
-                <svg class="logo-leaf" viewBox="0 0 24 24"><path d="M12,2C12,2 12,2 12,2C12,2 14,4 16,8C18,12 16,18 12,22C8,18 6,12 8,8C10,4 12,2 12,2Z"/></svg>
-                
-                <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" class="logo-img" alt="Logo">
-            </div>
-            <h2>The Armah Family</h2>
-            <h1>Christening</h1>
-        </header>
+    <div class="timeline-container" id="timeline">
+        </div>
 
-        <div class="timeline" id="timeline-list">
-            </div>
-
-        <footer>
-            <p>Celebration of New Life &copy; 2026</p>
-        </footer>
+    <div class="action-bar">
+        <a href="#" class="btn btn-secondary" onclick="alert('Calendar invite downloaded!')">
+            📅 Add to Cal
+        </a>
+        <a href="https://drive.google.com/file/d/1HEVRM-Rd0zJLmaRhwS5QaMLOZYWJW7yD/view?usp=sharing" target="_blank" class="btn btn-primary">
+            Download PDF
+        </a>
     </div>
 
-    <a href="https://drive.google.com/file/d/1HEVRM-Rd0zJLmaRhwS5QaMLOZYWJW7yD/view?usp=sharing" target="_blank" class="eco-btn">
-        Download PDF Program
-    </a>
-
     <script>
+        // --- 1. GENERATE FLOATING PARTICLES ---
+        const atm = document.getElementById('atmosphere');
+        for(let i=0; i<15; i++) {
+            let p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.width = (Math.random() * 50 + 10) + 'px';
+            p.style.height = p.style.width;
+            p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            p.style.animationDelay = (Math.random() * 5) + 's';
+            atm.appendChild(p);
+        }
+
+        // --- 2. POPULATE TIMELINE ---
         const events = [
-            { time: "09:00", title: "Arrival of Guests" },
-            { time: "09:15", title: "Opening Prayer" },
-            { time: "09:20", title: "Welcome Address" },
-            { time: "09:30", title: "Purpose of Gathering" },
-            { time: "09:45", title: "Gift Presentation" },
-            { time: "10:00", title: "Dedication to God", highlight: true },
-            { time: "10:30", title: "Family & Friends Gifts" },
-            { time: "11:00", title: "Vote of Thanks" },
-            { time: "11:15", title: "Photos & Reception" }
+            { time: "09:00", title: "Arrival of Guests", desc: "Welcome & Seating" },
+            { time: "09:15", title: "Opening Prayer", desc: "Commencing the Service" },
+            { time: "09:30", title: "Purpose of Gathering", desc: "A brief address" },
+            { time: "10:00", title: "The Dedication", desc: "Blessing the Child", highlight: true },
+            { time: "10:30", title: "Presentation of Gifts", desc: "Family & Friends" },
+            { time: "11:00", title: "Vote of Thanks", desc: "Closing Remarks" },
+            { time: "11:15", title: "Reception", desc: "Photos & Refreshments" }
         ];
 
-        const list = document.getElementById('timeline-list');
+        const timeline = document.getElementById('timeline');
 
         events.forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = item.highlight ? 'event-item highlight' : 'event-item';
-            div.style.animationDelay = (index * 0.1) + 's';
+            const el = document.createElement('div');
+            el.className = item.highlight ? 'event-card highlight' : 'event-card';
+            // Scroll Animation Trigger Delay
+            el.style.transitionDelay = (index * 0.1) + 's';
             
-            div.innerHTML = `
-                <div class="time">${item.time}</div>
-                <div class="marker-container">
-                    <div class="dot"></div>
-                </div>
-                <div class="details">
+            el.innerHTML = `
+                <div class="event-time-badge">${item.time}</div>
+                <div class="event-marker"></div>
+                <div class="event-detail">
                     <h3>${item.title}</h3>
+                    <p>${item.desc}</p>
                 </div>
             `;
-            list.appendChild(div);
+            timeline.appendChild(el);
+            
+            // Trigger animation after load
+            setTimeout(() => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 100);
         });
+
+        // --- 3. COUNTDOWN LOGIC ---
+        // Set the date we're counting down to
+        const eventDate = new Date("2026-02-15T09:00:00").getTime(); // Change this date!
+
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById("days").innerText = days < 10 ? "0"+days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0"+hours : hours;
+            document.getElementById("mins").innerText = minutes < 10 ? "0"+minutes : minutes;
+        }, 1000);
+
     </script>
 </body>
 </html>
