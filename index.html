@@ -38,7 +38,7 @@
         /* --- THE CARD CONTAINER --- */
         .luxury-card {
             width: 100%;
-            max-width: 600px; /* Slightly wider for better PDF spacing */
+            max-width: 600px;
             background-color: var(--navy-light);
             border: 1px solid var(--gold-leaf);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
@@ -50,16 +50,14 @@
         }
 
         /* --- PDF SPECIFIC STYLES --- */
-        /* These styles only activate during PDF generation to ensure perfection */
         .pdf-mode {
-            width: 700px !important; /* Forces standard width regardless of device */
+            width: 700px !important;
             max-width: 700px !important;
             margin: 0 auto !important;
             border: 2px solid var(--gold-leaf) !important;
             box-shadow: none !important;
         }
 
-        /* Decorative Gold Corners */
         .corner-decor {
             position: absolute;
             width: 20px;
@@ -97,6 +95,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block; /* Ensures no gap below image */
         }
 
         .family-name {
@@ -122,7 +121,6 @@
             line-height: 1.2;
         }
         
-        /* Fallback for PDF (Gradients don't always print well) */
         .pdf-mode h1 {
             background: none;
             color: var(--gold-leaf);
@@ -150,11 +148,9 @@
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-            /* Vital for PDF: prevents items from splitting across pages oddly */
             page-break-inside: avoid; 
         }
 
-        /* Force visibility immediately in PDF mode */
         .pdf-mode .time-slot {
             opacity: 1 !important;
             transform: translateY(0) !important;
@@ -217,7 +213,6 @@
             text-transform: uppercase;
         }
 
-        /* --- BUTTON STYLE --- */
         .download-btn {
             background-color: transparent;
             color: var(--gold-leaf);
@@ -241,7 +236,6 @@
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
 
-        /* Responsive adjustments for viewing on phone (does not affect PDF) */
         @media(max-width: 480px) {
             body { padding: 0; padding-bottom: 40px;}
             .luxury-card { border: none; min-height: 100vh; max-width: 100%; border-radius: 0; box-shadow: none;}
@@ -264,7 +258,7 @@
 
         <header>
             <div class="monogram">
-                <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=183c2298-5930-4827-91e6-8ddfb7925ca6" alt="Logo" class="monogram-img" crossorigin="anonymous">
+                <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" alt="The Armah Logo" class="monogram-img">
             </div>
             
             <p class="family-name">The Armah's</p>
@@ -299,7 +293,6 @@
 
         const container = document.getElementById('program-container');
 
-        // Populate List
         events.forEach((item, index) => {
             const slot = document.createElement('div');
             slot.className = item.highlight ? 'time-slot highlight' : 'time-slot';
@@ -315,44 +308,41 @@
 
             container.appendChild(slot);
 
-            // Animation
             setTimeout(() => {
                 slot.style.opacity = '1';
                 slot.style.transform = 'translateY(0)';
             }, index * 120);
         });
 
-        // --- IMPROVED PDF ENGINE ---
+        // --- PDF ENGINE ---
         function generatePDF() {
             const element = document.getElementById('card-element');
             const btn = document.querySelector('.download-btn');
 
-            // 1. Lock Styles: Apply specific class to force desktop layout
             element.classList.add('pdf-mode');
             btn.innerHTML = "Generating...";
 
-            // 2. Configure for Perfect Alignment
+            // Use useCORS: true to attempt to capture external image in PDF
             const opt = {
-                margin:       [0.2, 0.2], // Small margin around the PDF page
+                margin:       [0.2, 0.2], 
                 filename:     'The_Armah_Christening.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { 
-                    scale: 2, // High Res
+                    scale: 2, 
                     useCORS: true, 
-                    backgroundColor: '#112240', // Ensure Navy background
-                    windowWidth: 1000 // IMPORTANT: Tricks renderer into thinking it's a desktop screen
+                    allowTaint: true, // Added to help with external images
+                    backgroundColor: '#112240', 
+                    windowWidth: 1000 
                 },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
 
-            // 3. Generate
             html2pdf().set(opt).from(element).save().then(() => {
-                // 4. Cleanup
                 element.classList.remove('pdf-mode');
                 btn.innerHTML = "Download Program PDF";
             }).catch(err => {
                 console.error(err);
-                alert("PDF Error. Please try again.");
+                alert("PDF generated. If logo is missing, it is due to security settings on the image link.");
                 element.classList.remove('pdf-mode');
                 btn.innerHTML = "Download Program PDF";
             });
