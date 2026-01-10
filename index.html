@@ -9,30 +9,28 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         /* --- LUXURY COLOR PALETTE --- */
         :root {
-            --royal-navy: #0a192f;      /* Deep Midnight Blue */
-            --navy-light: #112240;      /* Slightly lighter navy for contrast */
-            --gold-leaf: #d4af37;       /* Metallic Gold */
-            --gold-pale: #f3e5ab;       /* Champagne Gold */
-            --paper-white: #fdfdfd;     /* Crisp White */
-            --slate-gray: #8892b0;      /* Muted text color */
+            --royal-navy: #0a192f;
+            --navy-light: #112240;
+            --gold-leaf: #d4af37;
+            --gold-pale: #f3e5ab;
+            --paper-white: #fdfdfd;
+            --slate-gray: #8892b0;
         }
 
-        /* --- GLOBAL RESET & TYPOGRAPHY --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--royal-navy);
             color: var(--paper-white);
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Changed for button placement */
+            align-items: center;
             min-height: 100vh;
             padding: 40px 20px;
         }
@@ -45,9 +43,10 @@
             border: 1px solid var(--gold-leaf);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
             position: relative;
-            overflow: hidden;
+            overflow: hidden; /* Ensures corners don't bleed out in PDF */
             display: flex;
             flex-direction: column;
+            margin-bottom: 30px;
         }
 
         /* Decorative Gold Corners */
@@ -70,14 +69,12 @@
             position: relative;
         }
 
-        /* The Logo Container */
         .monogram {
             width: 100px;
             height: 100px;
             border: 1px solid var(--gold-leaf);
             border-radius: 50%;
             margin: 0 auto 30px auto;
-            /* Container styling to hold the image */
             overflow: hidden; 
             background: var(--royal-navy);
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
@@ -86,12 +83,10 @@
             justify-content: center;
         }
 
-        /* The Image inside the Logo */
         .monogram-img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ensures image covers circle without distortion */
-            display: block;
+            object-fit: cover;
         }
 
         .family-name {
@@ -116,6 +111,13 @@
             margin-bottom: 5px;
             line-height: 1.2;
         }
+        
+        /* Fallback color for PDF generation (gradients sometimes fail in print) */
+        .pdf-mode h1 {
+            background: none;
+            color: var(--gold-leaf);
+            -webkit-text-fill-color: var(--gold-leaf);
+        }
 
         .separator-line {
             width: 40px;
@@ -138,9 +140,16 @@
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+            /* Page break prevention for PDF */
+            page-break-inside: avoid; 
+        }
+
+        /* Force visibility during PDF generation */
+        .pdf-mode .time-slot {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
         }
         
-        /* The Time (Left) */
         .ts-time {
             width: 80px;
             font-family: 'Montserrat', sans-serif;
@@ -152,7 +161,6 @@
             padding-top: 5px;
         }
 
-        /* The Divider Line */
         .ts-divider {
             width: 1px;
             background: linear-gradient(to bottom, var(--gold-leaf) 0%, rgba(10, 25, 47, 0) 90%);
@@ -163,11 +171,8 @@
             opacity: 0.3;
         }
         
-        .time-slot:last-child .ts-divider {
-            display: none;
-        }
+        .time-slot:last-child .ts-divider { display: none; }
 
-        /* The Diamond Marker */
         .ts-marker {
             position: absolute;
             left: 77px;
@@ -178,14 +183,9 @@
             border: 1px solid var(--gold-leaf);
             transform: rotate(45deg);
             z-index: 2;
-            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
         }
 
-        /* The Event (Right) */
-        .ts-event {
-            flex: 1;
-            padding-left: 25px;
-        }
+        .ts-event { flex: 1; padding-left: 25px; }
 
         .ts-event h3 {
             font-family: 'Playfair Display', serif;
@@ -195,13 +195,8 @@
             margin-bottom: 4px;
         }
         
-        /* Highlight specific important events */
-        .highlight h3 {
-            color: var(--gold-leaf);
-            font-weight: 600;
-        }
+        .highlight h3 { color: var(--gold-leaf); font-weight: 600; }
 
-        /* --- FOOTER --- */
         footer {
             text-align: center;
             padding: 30px;
@@ -212,18 +207,48 @@
             text-transform: uppercase;
         }
 
+        /* --- BUTTON STYLE --- */
+        .download-btn {
+            background-color: transparent;
+            color: var(--gold-leaf);
+            border: 1px solid var(--gold-leaf);
+            padding: 15px 30px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .download-btn:hover {
+            background-color: var(--gold-leaf);
+            color: var(--royal-navy);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Hide button in the PDF itself */
+        .download-btn.hidden {
+            display: none;
+        }
+
         /* Responsive */
         @media(max-width: 480px) {
-            body { padding: 0; }
-            .luxury-card { border: none; min-height: 100vh; max-width: 100%; border-radius: 0;}
+            body { padding: 0; padding-bottom: 40px;}
+            .luxury-card { border: none; min-height: 100vh; max-width: 100%; border-radius: 0; box-shadow: none;}
             header { padding: 60px 20px 30px 20px; }
             .program-list { padding: 0 20px 80px 20px; }
+            .download-btn { margin-bottom: 40px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="luxury-card">
+    <div class="luxury-card" id="card-element">
         <div class="corner-decor top-left"></div>
         <div class="corner-decor top-right"></div>
         <div class="corner-decor bottom-left"></div>
@@ -231,7 +256,7 @@
 
         <header>
             <div class="monogram">
-                <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" alt="Logo" class="monogram-img">
+                <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" alt="Logo" class="monogram-img" crossorigin="anonymous">
             </div>
             
             <p class="family-name">The Armah's</p>
@@ -246,6 +271,10 @@
             <p>The Armah Family &copy; 2026</p>
         </footer>
     </div>
+
+    <button class="download-btn" onclick="generatePDF()">
+        <span>Download Program PDF</span>
+    </button>
 
     <script>
         const events = [
@@ -262,6 +291,7 @@
 
         const container = document.getElementById('program-container');
 
+        // Populate List
         events.forEach((item, index) => {
             const slot = document.createElement('div');
             slot.className = item.highlight ? 'time-slot highlight' : 'time-slot';
@@ -277,12 +307,46 @@
 
             container.appendChild(slot);
 
-            // Elegant delayed fade-in
+            // Animation
             setTimeout(() => {
                 slot.style.opacity = '1';
                 slot.style.transform = 'translateY(0)';
             }, index * 120);
         });
+
+        // --- PDF GENERATION FUNCTION ---
+        function generatePDF() {
+            const element = document.getElementById('card-element');
+            const btn = document.querySelector('.download-btn');
+
+            // 1. Add class to disable animations and force visibility
+            element.classList.add('pdf-mode');
+            btn.innerHTML = "Generating...";
+
+            // 2. Configure PDF options
+            const opt = {
+                margin:       0,
+                filename:     'The_Armah_Christening_Program.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, // High resolution
+                    useCORS: true, // Allow loading the Firebase image
+                    backgroundColor: '#112240' // Match card background
+                },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // 3. Generate and Save
+            html2pdf().set(opt).from(element).save().then(() => {
+                // 4. Cleanup after save
+                element.classList.remove('pdf-mode');
+                btn.innerHTML = "Download Program PDF";
+            }).catch(err => {
+                console.error(err);
+                alert("There was an error generating the PDF. Please try again.");
+                btn.innerHTML = "Download Program PDF";
+            });
+        }
     </script>
 </body>
 </html>
