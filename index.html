@@ -29,7 +29,7 @@
             background-color: var(--royal-navy);
             color: var(--paper-white);
             display: flex;
-            flex-direction: column; /* Changed for button placement */
+            flex-direction: column; 
             align-items: center;
             min-height: 100vh;
             padding: 40px 20px;
@@ -38,15 +38,25 @@
         /* --- THE CARD CONTAINER --- */
         .luxury-card {
             width: 100%;
-            max-width: 550px;
+            max-width: 600px; /* Slightly wider for better PDF spacing */
             background-color: var(--navy-light);
             border: 1px solid var(--gold-leaf);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
             position: relative;
-            overflow: hidden; /* Ensures corners don't bleed out in PDF */
+            overflow: hidden; 
             display: flex;
             flex-direction: column;
             margin-bottom: 30px;
+        }
+
+        /* --- PDF SPECIFIC STYLES --- */
+        /* These styles only activate during PDF generation to ensure perfection */
+        .pdf-mode {
+            width: 700px !important; /* Forces standard width regardless of device */
+            max-width: 700px !important;
+            margin: 0 auto !important;
+            border: 2px solid var(--gold-leaf) !important;
+            box-shadow: none !important;
         }
 
         /* Decorative Gold Corners */
@@ -70,11 +80,11 @@
         }
 
         .monogram {
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 110px;
             border: 1px solid var(--gold-leaf);
             border-radius: 50%;
-            margin: 0 auto 30px auto;
+            margin: 0 auto 25px auto;
             overflow: hidden; 
             background: var(--royal-navy);
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
@@ -93,7 +103,7 @@
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
             letter-spacing: 6px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: var(--slate-gray);
             margin-bottom: 10px;
             font-weight: 500;
@@ -112,7 +122,7 @@
             line-height: 1.2;
         }
         
-        /* Fallback color for PDF generation (gradients sometimes fail in print) */
+        /* Fallback for PDF (Gradients don't always print well) */
         .pdf-mode h1 {
             background: none;
             color: var(--gold-leaf);
@@ -120,7 +130,7 @@
         }
 
         .separator-line {
-            width: 40px;
+            width: 50px;
             height: 1px;
             background-color: var(--gold-leaf);
             margin: 30px auto;
@@ -140,20 +150,20 @@
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-            /* Page break prevention for PDF */
+            /* Vital for PDF: prevents items from splitting across pages oddly */
             page-break-inside: avoid; 
         }
 
-        /* Force visibility during PDF generation */
+        /* Force visibility immediately in PDF mode */
         .pdf-mode .time-slot {
             opacity: 1 !important;
             transform: translateY(0) !important;
         }
         
         .ts-time {
-            width: 80px;
+            width: 90px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             letter-spacing: 1px;
             color: var(--gold-leaf);
             text-align: right;
@@ -165,7 +175,7 @@
             width: 1px;
             background: linear-gradient(to bottom, var(--gold-leaf) 0%, rgba(10, 25, 47, 0) 90%);
             position: absolute;
-            left: 80px;
+            left: 90px;
             top: 8px;
             bottom: -40px;
             opacity: 0.3;
@@ -175,7 +185,7 @@
 
         .ts-marker {
             position: absolute;
-            left: 77px;
+            left: 87px;
             top: 8px;
             width: 7px;
             height: 7px;
@@ -189,7 +199,7 @@
 
         .ts-event h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 400;
             color: var(--paper-white);
             margin-bottom: 4px;
@@ -201,7 +211,7 @@
             text-align: center;
             padding: 30px;
             border-top: 1px solid rgba(212, 175, 55, 0.1);
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: var(--slate-gray);
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -230,19 +240,17 @@
             color: var(--royal-navy);
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
-        
-        /* Hide button in the PDF itself */
-        .download-btn.hidden {
-            display: none;
-        }
 
-        /* Responsive */
+        /* Responsive adjustments for viewing on phone (does not affect PDF) */
         @media(max-width: 480px) {
             body { padding: 0; padding-bottom: 40px;}
             .luxury-card { border: none; min-height: 100vh; max-width: 100%; border-radius: 0; box-shadow: none;}
             header { padding: 60px 20px 30px 20px; }
             .program-list { padding: 0 20px 80px 20px; }
             .download-btn { margin-bottom: 40px; }
+            .ts-time { width: 70px; padding-right: 15px; }
+            .ts-divider { left: 70px; }
+            .ts-marker { left: 67px; }
         }
     </style>
 </head>
@@ -314,36 +322,38 @@
             }, index * 120);
         });
 
-        // --- PDF GENERATION FUNCTION ---
+        // --- IMPROVED PDF ENGINE ---
         function generatePDF() {
             const element = document.getElementById('card-element');
             const btn = document.querySelector('.download-btn');
 
-            // 1. Add class to disable animations and force visibility
+            // 1. Lock Styles: Apply specific class to force desktop layout
             element.classList.add('pdf-mode');
             btn.innerHTML = "Generating...";
 
-            // 2. Configure PDF options
+            // 2. Configure for Perfect Alignment
             const opt = {
-                margin:       0,
-                filename:     'The_Armah_Christening_Program.pdf',
+                margin:       [0.2, 0.2], // Small margin around the PDF page
+                filename:     'The_Armah_Christening.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { 
-                    scale: 2, // High resolution
-                    useCORS: true, // Allow loading the Firebase image
-                    backgroundColor: '#112240' // Match card background
+                    scale: 2, // High Res
+                    useCORS: true, 
+                    backgroundColor: '#112240', // Ensure Navy background
+                    windowWidth: 1000 // IMPORTANT: Tricks renderer into thinking it's a desktop screen
                 },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
 
-            // 3. Generate and Save
+            // 3. Generate
             html2pdf().set(opt).from(element).save().then(() => {
-                // 4. Cleanup after save
+                // 4. Cleanup
                 element.classList.remove('pdf-mode');
                 btn.innerHTML = "Download Program PDF";
             }).catch(err => {
                 console.error(err);
-                alert("There was an error generating the PDF. Please try again.");
+                alert("PDF Error. Please try again.");
+                element.classList.remove('pdf-mode');
                 btn.innerHTML = "Download Program PDF";
             });
         }
