@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Armah Christening</title>
     
-    <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" type="image/jpeg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
     <style>
         /* --- LUXURY COLOR PALETTE --- */
         :root {
@@ -49,12 +47,11 @@
             margin-bottom: 30px;
         }
 
-        /* --- PDF SPECIFIC STYLES (THE FIX) --- */
-        /* This forces the card to be a specific flat image with NO margins during print */
+        /* --- PDF SPECIFIC STYLES --- */
         .pdf-mode {
-            width: 800px !important;       /* Standard width for high quality */
+            width: 800px !important;
             max-width: 800px !important;
-            margin: 0 !important;          /* REMOVES ALL MARGINS that cause misalignment */
+            margin: 0 !important;
             border: 2px solid var(--gold-leaf) !important;
             box-shadow: none !important;
             border-radius: 0 !important;
@@ -260,7 +257,7 @@
 
         <header>
             <div class="monogram">
-                <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" alt="The Armah Logo" class="monogram-img" crossorigin="anonymous">
+                <img id="logo-img" src="" alt="The Armah Logo" class="monogram-img">
             </div>
             
             <p class="family-name">The Armah's</p>
@@ -281,6 +278,15 @@
     </button>
 
     <script>
+        // --- 1. SET THE LOGO URL HERE ---
+        // Since we can't reliably base64 encode a dynamic URL without a server proxy due to CORS,
+        // we will use the standard img tag but with a trick in the PDF generator.
+        // If this still fails, you must download the image, convert it to base64 online (sites like base64-image.de),
+        // and paste the long string here.
+        
+        // For now, let's try the standard way but with the 'allowTaint' flag strictly enabled in the PDF section.
+        document.getElementById('logo-img').src = "https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002";
+
         const events = [
             { time: "09:00", title: "Arrival of Guests" },
             { time: "09:15", title: "Opening Prayer" },
@@ -327,21 +333,17 @@
 
             // 2. Setup Options
             const opt = {
-                // Margins: [top, left, bottom, right] in inches
-                // This ensures the card sits in the middle of the paper
                 margin:       [0.5, 0.5, 0.5, 0.5], 
-                
                 filename:     'The_Armah_Christening.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 
                 html2canvas:  { 
                     scale: 2, 
-                    useCORS: true, 
-                    allowTaint: true,
-                    // IMPORTANT: windowWidth must match the .pdf-mode width to prevent cropping
-                    windowWidth: 800, 
-                    // Remove explicit background color so it doesn't paint the whole PDF blue
-                    // backgroundColor: null 
+                    // KEY FIXES FOR IMAGES:
+                    useCORS: true,       // Try to fetch cross-origin
+                    allowTaint: true,    // Allow "tainted" (external) images to be drawn
+                    logging: true,       // Helpful for debugging
+                    windowWidth: 800
                 },
                 
                 jsPDF: { 
@@ -357,7 +359,7 @@
                 btn.innerHTML = "Download Program PDF";
             }).catch(err => {
                 console.error(err);
-                alert("PDF generated. If there are issues, check image permissions.");
+                alert("If the logo is still missing, it is a strict security policy on your image server. The only fix is to download the image, convert it to Base64, and paste the code directly.");
                 element.classList.remove('pdf-mode');
                 btn.innerHTML = "Download Program PDF";
             });
