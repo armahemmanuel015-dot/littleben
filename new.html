@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Armah Christening | Royal Edition</title>
+    
+    <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" type="image/jpeg">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Deep, Rich Navy Background */
+            --bg-gradient: radial-gradient(circle at center, #112240 0%, #0a192f 100%);
+            --card-bg: #0e1c33;
+            
+            /* The "Real Gold" Gradient Palette */
+            --gold-metal: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --gold-flat: #d4af37;
+            
+            --text-white: #ffffff;
+            --text-muted: #8892b0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* --- THE LUXURY CARD --- */
+        .royal-card {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--card-bg);
+            border-radius: 4px; /* Sharp, clean corners */
+            
+            /* The Metallic Gold Border Effect */
+            padding: 3px; /* Creates space for the gradient border */
+            background-image: var(--gold-metal);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .inner-content {
+            background-color: var(--card-bg); /* Covers the middle so only border shows */
+            height: 100%;
+            padding: 60px 30px;
+            position: relative;
+        }
+
+        /* Decorative Corners */
+        .corner-accent {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            z-index: 1;
+        }
+        .tl { top: 15px; left: 15px; border-right: none; border-bottom: none; }
+        .tr { top: 15px; right: 15px; border-left: none; border-bottom: none; }
+        .bl { bottom: 15px; left: 15px; border-right: none; border-top: none; }
+        .br { bottom: 15px; right: 15px; border-left: none; border-top: none; }
+
+        /* --- HEADER --- */
+        header { text-align: center; margin-bottom: 50px; }
+
+        .logo-frame {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 25px auto;
+            border-radius: 50%;
+            padding: 3px; /* Gold rim thickness */
+            background: var(--gold-metal); /* Metallic Rim */
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+        }
+
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--card-bg); /* Separation line */
+            display: block;
+        }
+
+        .family-label {
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            
+            /* Metallic Text Effect */
+            background: var(--gold-metal);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        .divider {
+            height: 1px;
+            width: 60px;
+            background: var(--gold-metal);
+            margin: 0 auto;
+            opacity: 0.7;
+        }
+
+        /* --- TIMELINE --- */
+        .timeline {
+            position: relative;
+            padding-left: 10px;
+        }
+
+        .event-row {
+            display: flex;
+            margin-bottom: 35px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .time-col {
+            width: 85px;
+            text-align: right;
+            padding-right: 20px;
+            font-size: 0.85rem;
+            color: var(--gold-flat);
+            font-weight: 500;
+            padding-top: 4px;
+        }
+
+        .marker-col {
+            width: 20px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* The Vertical Gold Line */
+        .line {
+            position: absolute;
+            top: 8px;
+            bottom: -45px;
+            width: 1px;
+            background: linear-gradient(to bottom, var(--gold-flat), rgba(10, 25, 47, 0));
+        }
+        
+        /* Remove line for last item */
+        .event-row:last-child .line { display: none; }
+
+        /* The Diamond Dot */
+        .dot {
+            width: 9px;
+            height: 9px;
+            background: var(--card-bg);
+            border: 1px solid var(--gold-flat);
+            transform: rotate(45deg);
+            z-index: 2;
+            margin-top: 7px;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+
+        .info-col {
+            flex: 1;
+            padding-left: 15px;
+        }
+
+        .info-col h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #fff;
+            line-height: 1.3;
+        }
+        
+        /* Highlight Special Events */
+        .highlight h3 {
+            color: #fcf6ba; /* Lighter gold */
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            font-weight: 600;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* --- BUTTON --- */
+        .gold-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: var(--gold-metal);
+            color: #0e1c33; /* Dark text on gold button */
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 0.8rem;
+            box-shadow: 0 10px 20px rgba(189, 149, 63, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #fff; /* Slight inner border look */
+        }
+
+        .gold-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(189, 149, 63, 0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="royal-card">
+        <div class="inner-content">
+            <div class="corner-accent tl"></div>
+            <div class="corner-accent tr"></div>
+            <div class="corner-accent bl"></div>
+            <div class="corner-accent br"></div>
+
+            <header>
+                <div class="logo-frame">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" class="logo-img" alt="Armah Family Logo">
+                </div>
+                
+                <p class="family-label">The Armah Family</p>
+                <h1>Christening<br>Ceremony</h1>
+                <div class="divider"></div>
+            </header>
+
+            <div class="timeline" id="timeline-container">
+                </div>
+
+            <footer>
+                <p>With Gratitude & Love &copy; 2026</p>
+            </footer>
+        </div>
+    </div>
+
+    <a href="https://drive.google.com/file/d/1HEVRM-Rd0zJLmaRhwS5QaMLOZYWJW7yD/view?usp=sharing" target="_blank" class="gold-btn">
+        Download Program PDF
+    </a>
+
+    <script>
+        const events = [
+            { time: "09:00", title: "Arrival of Guests" },
+            { time: "09:15", title: "Opening Prayer" },
+            { time: "09:20", title: "Intro of Chairperson" },
+            { time: "09:30", title: "Purpose of Gathering" },
+            { time: "09:45", title: "Presentation of Gifts" },
+            { time: "10:00", title: "Dedication to the Lord", highlight: true },
+            { time: "10:30", title: "Family & Friends Gifts" },
+            { time: "11:00", title: "Vote of Thanks" },
+            { time: "11:15", title: "Reception & Photos" }
+        ];
+
+        const container = document.getElementById('timeline-container');
+
+        events.forEach((item, index) => {
+            const row = document.createElement('div');
+            row.className = item.highlight ? 'event-row highlight' : 'event-row';
+            
+            // Staggered Animation Delay
+            row.style.animationDelay = (index * 0.15) + 's';
+
+            row.innerHTML = `
+                <div class="time-col">${item.time}</div>
+                <div class="marker-col">
+                    <div class="dot"></div>
+                    <div class="line"></div>
+                </div>
+                <div class="info-col">
+                    <h3>${item.title}</h3>
+                </div>
+            `;
+            container.appendChild(row);
+        });
+    </script>
+</body>
+</html>
