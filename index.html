@@ -49,13 +49,15 @@
             margin-bottom: 30px;
         }
 
-        /* --- PDF SPECIFIC STYLES --- */
+        /* --- PDF SPECIFIC STYLES (THE FIX) --- */
+        /* This forces the card to be a specific flat image with NO margins during print */
         .pdf-mode {
-            width: 700px !important;
-            max-width: 700px !important;
-            margin: 0 auto !important;
+            width: 800px !important;       /* Standard width for high quality */
+            max-width: 800px !important;
+            margin: 0 !important;          /* REMOVES ALL MARGINS that cause misalignment */
             border: 2px solid var(--gold-leaf) !important;
             box-shadow: none !important;
+            border-radius: 0 !important;
         }
 
         .corner-decor {
@@ -95,7 +97,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block; /* Ensures no gap below image */
+            display: block; 
         }
 
         .family-name {
@@ -258,7 +260,7 @@
 
         <header>
             <div class="monogram">
-                <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" alt="The Armah Logo" class="monogram-img">
+                <img src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" alt="The Armah Logo" class="monogram-img" crossorigin="anonymous">
             </div>
             
             <p class="family-name">The Armah's</p>
@@ -314,35 +316,48 @@
             }, index * 120);
         });
 
-        // --- PDF ENGINE ---
+        // --- IMPROVED PDF ENGINE ---
         function generatePDF() {
             const element = document.getElementById('card-element');
             const btn = document.querySelector('.download-btn');
 
+            // 1. Force Styling for Print
             element.classList.add('pdf-mode');
             btn.innerHTML = "Generating...";
 
-            // Use useCORS: true to attempt to capture external image in PDF
+            // 2. Setup Options
             const opt = {
-                margin:       [0.2, 0.2], 
+                // Margins: [top, left, bottom, right] in inches
+                // This ensures the card sits in the middle of the paper
+                margin:       [0.5, 0.5, 0.5, 0.5], 
+                
                 filename:     'The_Armah_Christening.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
+                
                 html2canvas:  { 
                     scale: 2, 
                     useCORS: true, 
-                    allowTaint: true, // Added to help with external images
-                    backgroundColor: '#112240', 
-                    windowWidth: 1000 
+                    allowTaint: true,
+                    // IMPORTANT: windowWidth must match the .pdf-mode width to prevent cropping
+                    windowWidth: 800, 
+                    // Remove explicit background color so it doesn't paint the whole PDF blue
+                    // backgroundColor: null 
                 },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                
+                jsPDF: { 
+                    unit: 'in', 
+                    format: 'letter', 
+                    orientation: 'portrait' 
+                }
             };
 
+            // 3. Generate
             html2pdf().set(opt).from(element).save().then(() => {
                 element.classList.remove('pdf-mode');
                 btn.innerHTML = "Download Program PDF";
             }).catch(err => {
                 console.error(err);
-                alert("PDF generated. If logo is missing, it is due to security settings on the image link.");
+                alert("PDF generated. If there are issues, check image permissions.");
                 element.classList.remove('pdf-mode');
                 btn.innerHTML = "Download Program PDF";
             });
