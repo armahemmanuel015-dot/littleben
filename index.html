@@ -3,229 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Armah Flyer Maker</title>
+    <title>Armah Flyer Architect</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         body {
-            background-color: #222; /* Dark background to see the canvas better */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            font-family: sans-serif;
+            background-color: #1a1a1a;
             color: white;
+            font-family: 'Lato', sans-serif;
+            display: flex;
+            flex-direction: row; /* Side by side layout */
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
 
-        /* Controls Area */
+        /* --- LEFT PANEL: CONTROLS --- */
         .controls {
-            margin-bottom: 20px;
-            text-align: center;
-            background: #333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 350px;
+            background: #2a2a2a;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-right: 1px solid #444;
+            overflow-y: auto;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+            z-index: 10;
         }
+
+        h2 { color: #C5A059; margin-top: 0; font-family: 'Cinzel', serif; }
+        
+        label { font-size: 0.8rem; color: #aaa; margin-bottom: 5px; display: block;}
+        
+        input, textarea {
+            width: 100%;
+            background: #111;
+            border: 1px solid #444;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        textarea { height: 80px; }
+
+        /* File Upload */
+        .file-btn {
+            background: #333;
+            border: 1px dashed #C5A059;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .file-btn:hover { background: #444; }
+        input[type="file"] { display: none; }
 
         button {
             background: #C5A059;
             color: #000;
             border: none;
-            padding: 15px 30px;
-            font-size: 1rem;
+            padding: 15px;
             font-weight: bold;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
             cursor: pointer;
+            margin-top: auto; /* Push to bottom */
             border-radius: 5px;
-            text-transform: uppercase;
         }
-        button:hover { background: #d4af37; }
+        button:hover { background: #e6c575; }
 
-        input[type="file"] {
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        /* --- THE FLYER CANVAS (Hidden Scale) --- */
-        /* We scale this down visually so you can see it, but it renders at full 1080x1920 */
-        #preview-container {
-            transform: scale(0.35); /* Scale down to fit screen */
-            transform-origin: top center;
-            border: 2px solid #555;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-        }
-
-        #flyer {
-            width: 1080px;
-            height: 1920px;
-            background-color: #FDFCF8; /* Warm Sand */
-            position: relative;
-            overflow: hidden;
+        /* --- RIGHT PANEL: PREVIEW --- */
+        .preview-area {
+            flex: 1;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 80px;
-            box-sizing: border-box;
-        }
-
-        /* --- PARTICLES --- */
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: #C5A059;
-            opacity: 0.3;
-        }
-
-        /* --- CONTENT --- */
-        .logo-box {
-            width: 350px;
-            height: 350px;
+            background-color: #111;
             position: relative;
-            margin-bottom: 80px;
+            padding: 20px;
         }
 
-        /* The Gold Ring */
-        .logo-ring {
-            position: absolute;
-            top: -20px; left: -20px; right: -20px; bottom: -20px;
-            border: 3px dashed #C5A059;
-            border-radius: 50%;
+        /* We scale this canvas visually to fit the screen, 
+           but it remains 1080x1920 internally for high quality */
+        canvas {
+            max-height: 90vh;
+            max-width: 100%;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            border: 1px solid #333;
         }
-
-        /* The Image */
-        #flyer-logo {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 8px solid #fff;
-            position: relative;
-            z-index: 2;
+        
+        @media (max-width: 900px) {
+            body { flex-direction: column; overflow-y: auto; }
+            .controls { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #444;}
+            canvas { max-height: 60vh; }
         }
-
-        h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 6rem; /* Huge for high res */
-            color: #2A2A2A;
-            margin: 0 0 40px 0;
-            font-weight: 600;
-            letter-spacing: 5px;
-        }
-
-        .separator {
-            width: 150px;
-            height: 4px;
-            background: #C5A059;
-            margin-bottom: 60px;
-        }
-
-        p.message {
-            font-family: 'Lato', sans-serif;
-            font-size: 2.2rem;
-            color: #666666;
-            line-height: 1.6;
-            margin-bottom: 100px;
-            font-weight: 300;
-            max-width: 800px;
-        }
-
-        .signature {
-            font-family: 'Cinzel', serif;
-            font-size: 2.5rem;
-            color: #C5A059;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            font-weight: 600;
-        }
-
     </style>
 </head>
 <body>
 
     <div class="controls">
-        <h3 style="color:#C5A059; margin-top:0;">1. Upload Logo (Optional)</h3>
-        <p style="font-size:0.8rem; color:#ccc; margin-bottom:10px;">(If the default doesn't load, upload it here)</p>
-        <input type="file" accept="image/*" onchange="uploadLogo(this)">
-        <br>
-        <button onclick="downloadFlyer()">2. Download Flyer Image</button>
+        <h2>Flyer Architect</h2>
+
+        <div>
+            <label>1. LOGO IMAGE</label>
+            <label for="logoInput" class="file-btn" id="fileLabel">📂 Upload Photo</label>
+            <input type="file" id="logoInput" accept="image/*" onchange="handleLogo(this)">
+        </div>
+
+        <div>
+            <label>2. MAIN TITLE</label>
+            <input type="text" id="titleText" value="THANK YOU" oninput="drawFlyer()">
+        </div>
+
+        <div>
+            <label>3. MESSAGE BODY</label>
+            <textarea id="msgText" oninput="drawFlyer()">To all our wonderful friends and family who joined us to celebrate this special day. Your presence, love, and generous gifts made the occasion truly unforgettable.</textarea>
+        </div>
+
+        <div>
+            <label>4. SIGNATURE</label>
+            <input type="text" id="signText" value="The Armah Family" oninput="drawFlyer()">
+        </div>
+
+        <button onclick="downloadFlyer()">⬇ Download High-Res Image</button>
     </div>
 
-    <div id="preview-container">
-        <div id="flyer">
-            <div id="particles-layer"></div>
+    <div class="preview-area">
+        <canvas id="flyerCanvas" width="1080" height="1920"></canvas>
+    </div>
 
-            <div class="logo-box">
-                <div class="logo-ring"></div>
-                <img id="flyer-logo" src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" crossorigin="anonymous">
-            </div>
-
-            <h1>THANK YOU</h1>
-            <div class="separator"></div>
-
-            <p class="message">
-                To all our wonderful friends and family who joined us to celebrate this special day.
-                <br><br>
-                Your presence, love, and generous gifts made the occasion truly unforgettable. Our hearts are full.
-            </p>
-
-            <p class="signature">
-                With Love,<br>
-                The Armah Family
-            </p>
-        </div>
+    <div style="display:none;">
+        <img id="defaultLogo" src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" crossorigin="anonymous" onload="init()">
     </div>
 
     <script>
-        // 1. Generate Static Particles (So they look good in screenshot)
-        const layer = document.getElementById('particles-layer');
-        for(let i=0; i<30; i++) {
-            let p = document.createElement('div');
-            p.className = 'particle';
-            let size = Math.random() * 60 + 20; // 20px to 80px
-            p.style.width = size + 'px';
-            p.style.height = size + 'px';
-            p.style.left = Math.random() * 1080 + 'px';
-            p.style.top = Math.random() * 1920 + 'px';
-            layer.appendChild(p);
+        // --- CONFIGURATION ---
+        const canvas = document.getElementById('flyerCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Colors
+        const COLORS = {
+            bg: "#FDFCF8",
+            gold: "#C5A059",
+            textDark: "#2A2A2A",
+            textLight: "#555555"
+        };
+
+        // State
+        let logoImg = document.getElementById('defaultLogo');
+        let particles = [];
+
+        // --- 1. INITIALIZATION ---
+        function init() {
+            // Generate random particles once so they don't jitter while typing
+            for(let i=0; i<35; i++) {
+                particles.push({
+                    x: Math.random() * 1080,
+                    y: Math.random() * 1920,
+                    r: Math.random() * 40 + 10,
+                    opacity: Math.random() * 0.15 + 0.05
+                });
+            }
+            // Wait for fonts to load briefly then draw
+            document.fonts.ready.then(() => {
+                drawFlyer();
+            });
         }
 
-        // 2. Allow User to Upload Logo (Fixes security/CORS issues)
-        function uploadLogo(input) {
-            if (input.files && input.files[0]) {
+        // --- 2. HANDLE LOGO UPLOAD ---
+        function handleLogo(input) {
+            if(input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById('flyer-logo').src = e.target.result;
-                }
+                    const img = new Image();
+                    img.onload = function() {
+                        logoImg = img;
+                        document.getElementById('fileLabel').innerText = "✅ Image Loaded";
+                        drawFlyer();
+                    };
+                    img.src = e.target.result;
+                };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        // 3. Generate and Download
-        function downloadFlyer() {
-            const btn = document.querySelector('button');
-            btn.innerHTML = "Generating...";
-            
-            const element = document.getElementById('flyer');
+        // --- 3. THE DRAWING ENGINE (The Magic Part) ---
+        function drawFlyer() {
+            // A. Clear & Background
+            ctx.fillStyle = COLORS.bg;
+            ctx.fillRect(0, 0, 1080, 1920);
 
-            html2canvas(element, {
-                scale: 1, // Full 1080x1920 resolution
-                useCORS: true, // Try to load external logo
-                allowTaint: true
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Armah_ThankYou_Flyer.png';
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-                btn.innerHTML = "2. Download Flyer Image";
-            }).catch(err => {
-                alert("If the logo is missing, please upload it using the 'Choose File' button first.");
-                btn.innerHTML = "2. Download Flyer Image";
+            // B. Draw Particles (Atmosphere)
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                ctx.fillStyle = `rgba(197, 160, 89, ${p.opacity})`; // Gold with opacity
+                ctx.fill();
             });
+
+            // C. Draw Logo
+            const logoSize = 400;
+            const logoX = (1080 - logoSize) / 2;
+            const logoY = 300;
+            const centerX = 1080 / 2;
+            const centerY = logoY + (logoSize/2);
+
+            ctx.save();
+            // 1. Clip Circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, logoSize/2, 0, Math.PI*2);
+            ctx.closePath();
+            ctx.clip();
+            // 2. Draw Image
+            // Calculate aspect ratio to cover the circle
+            let sWidth = logoImg.width;
+            let sHeight = logoImg.height;
+            let ratio = Math.max(logoSize / sWidth, logoSize / sHeight);
+            let dWidth = sWidth * ratio;
+            let dHeight = sHeight * ratio;
+            let dx = centerX - (dWidth/2);
+            let dy = centerY - (dHeight/2);
+            
+            ctx.drawImage(logoImg, dx, dy, dWidth, dHeight);
+            ctx.restore();
+
+            // 3. Draw Gold Ring
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, (logoSize/2) + 15, 0, Math.PI*2);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = COLORS.gold;
+            ctx.setLineDash([15, 10]); // Dashed effect
+            ctx.stroke();
+            ctx.setLineDash([]); // Reset
+
+            // D. Draw Typography
+            const title = document.getElementById('titleText').value.toUpperCase();
+            const msg = document.getElementById('msgText').value;
+            const sign = document.getElementById('signText').value;
+
+            // Title
+            ctx.fillStyle = COLORS.textDark;
+            ctx.font = "bold 130px 'Cinzel', serif"; // Large Title Font
+            ctx.textAlign = "center";
+            ctx.fillText(title, 540, 880);
+
+            // Separator Line
+            ctx.beginPath();
+            ctx.moveTo(440, 930);
+            ctx.lineTo(640, 930);
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = COLORS.gold;
+            ctx.stroke();
+
+            // Message Body (Text Wrapping)
+            ctx.fillStyle = COLORS.textLight;
+            ctx.font = "300 50px 'Lato', sans-serif"; // Body Font
+            wrapText(ctx, msg, 540, 1050, 800, 80);
+
+            // Signature
+            // Calculate Y position based on message length approximation, or fixed at bottom
+            ctx.fillStyle = COLORS.textDark;
+            ctx.font = "italic 40px 'Lato', sans-serif";
+            ctx.fillText("With Love,", 540, 1600);
+            
+            ctx.fillStyle = COLORS.gold;
+            ctx.font = "bold 70px 'Cinzel', serif";
+            ctx.fillText(sign, 540, 1700);
         }
+
+        // Helper: Wrap text to fit width
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            var paragraphs = text.split('\n');
+            
+            for (var p = 0; p < paragraphs.length; p++) {
+                var words = paragraphs[p].split(' ');
+                var line = '';
+
+                for(var n = 0; n < words.length; n++) {
+                    var testLine = line + words[n] + ' ';
+                    var metrics = context.measureText(testLine);
+                    var testWidth = metrics.width;
+                    if (testWidth > maxWidth && n > 0) {
+                        context.fillText(line, x, y);
+                        line = words[n] + ' ';
+                        y += lineHeight;
+                    } else {
+                        line = testLine;
+                    }
+                }
+                context.fillText(line, x, y);
+                y += lineHeight; // Add extra space for new paragraph
+            }
+        }
+
+        // --- 4. DOWNLOAD FUNCTION ---
+        function downloadFlyer() {
+            const link = document.createElement('a');
+            link.download = 'Armah_Flyer_Final.png';
+            link.href = canvas.toDataURL("image/png", 1.0); // Highest quality
+            link.click();
+        }
+
+        // Try to initialize immediately
+        init();
     </script>
 </body>
 </html>
