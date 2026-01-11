@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Armah Flyer Architect</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <title>Armah Flyer Architect (Fixed)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -12,7 +12,7 @@
             color: white;
             font-family: 'Lato', sans-serif;
             display: flex;
-            flex-direction: row; /* Side by side layout */
+            flex-direction: row;
             height: 100vh;
             margin: 0;
             overflow: hidden;
@@ -41,13 +41,13 @@
             background: #111;
             border: 1px solid #444;
             color: white;
-            padding: 10px;
+            padding: 15px; /* Larger padding for easier typing */
             border-radius: 5px;
             font-family: inherit;
-            resize: vertical;
+            font-size: 1rem;
         }
 
-        textarea { height: 80px; }
+        textarea { height: 100px; resize: vertical; }
 
         /* File Upload */
         .file-btn {
@@ -66,12 +66,12 @@
             background: #C5A059;
             color: #000;
             border: none;
-            padding: 15px;
+            padding: 20px;
             font-weight: bold;
             font-family: 'Cinzel', serif;
-            font-size: 1rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            margin-top: auto; /* Push to bottom */
+            margin-top: 20px;
             border-radius: 5px;
         }
         button:hover { background: #e6c575; }
@@ -83,12 +83,9 @@
             align-items: center;
             justify-content: center;
             background-color: #111;
-            position: relative;
             padding: 20px;
         }
 
-        /* We scale this canvas visually to fit the screen, 
-           but it remains 1080x1920 internally for high quality */
         canvas {
             max-height: 90vh;
             max-width: 100%;
@@ -109,24 +106,24 @@
         <h2>Flyer Architect</h2>
 
         <div>
-            <label>1. LOGO IMAGE</label>
-            <label for="logoInput" class="file-btn" id="fileLabel">📂 Upload Photo</label>
-            <input type="file" id="logoInput" accept="image/*" onchange="handleLogo(this)">
+            <label>1. UPLOAD LOGO (Required)</label>
+            <label for="logoInput" class="file-btn" id="fileLabel">📂 Click to Upload Logo</label>
+            <input type="file" id="logoInput" accept="image/*">
         </div>
 
         <div>
             <label>2. MAIN TITLE</label>
-            <input type="text" id="titleText" value="THANK YOU" oninput="drawFlyer()">
+            <input type="text" id="titleText" value="THANK YOU">
         </div>
 
         <div>
             <label>3. MESSAGE BODY</label>
-            <textarea id="msgText" oninput="drawFlyer()">To all our wonderful friends and family who joined us to celebrate this special day. Your presence, love, and generous gifts made the occasion truly unforgettable.</textarea>
+            <textarea id="msgText">To all our wonderful friends and family who joined us to celebrate this special day. Your presence, love, and generous gifts made the occasion truly unforgettable.</textarea>
         </div>
 
         <div>
             <label>4. SIGNATURE</label>
-            <input type="text" id="signText" value="The Armah Family" oninput="drawFlyer()">
+            <input type="text" id="signText" value="The Armah Family">
         </div>
 
         <button onclick="downloadFlyer()">⬇ Download High-Res Image</button>
@@ -134,10 +131,6 @@
 
     <div class="preview-area">
         <canvas id="flyerCanvas" width="1080" height="1920"></canvas>
-    </div>
-
-    <div style="display:none;">
-        <img id="defaultLogo" src="https://firebasestorage.googleapis.com/v0/b/mealone-29b00.firebasestorage.app/o/WhatsApp%20Image%202026-01-09%20at%204.33.48%20PM.jpeg?alt=media&token=1db5149c-77d6-475e-9bbc-e8fc55bbb002" crossorigin="anonymous" onload="init()">
     </div>
 
     <script>
@@ -154,44 +147,55 @@
         };
 
         // State
-        let logoImg = document.getElementById('defaultLogo');
+        let uploadedImg = null; // Starts empty
         let particles = [];
 
-        // --- 1. INITIALIZATION ---
-        function init() {
-            // Generate random particles once so they don't jitter while typing
-            for(let i=0; i<35; i++) {
-                particles.push({
-                    x: Math.random() * 1080,
-                    y: Math.random() * 1920,
-                    r: Math.random() * 40 + 10,
-                    opacity: Math.random() * 0.15 + 0.05
-                });
-            }
-            // Wait for fonts to load briefly then draw
-            document.fonts.ready.then(() => {
-                drawFlyer();
+        // --- 1. SETUP EVENT LISTENERS (Reliable Updates) ---
+        // We bind the "Draw" function to every possible text change event
+        const inputs = ['titleText', 'msgText', 'signText'];
+        inputs.forEach(id => {
+            const el = document.getElementById(id);
+            el.addEventListener('input', drawFlyer);
+            el.addEventListener('keyup', drawFlyer);
+            el.addEventListener('change', drawFlyer);
+        });
+
+        document.getElementById('logoInput').addEventListener('change', handleLogo);
+
+        // --- 2. INITIALIZATION ---
+        // Generate random particles once
+        for(let i=0; i<35; i++) {
+            particles.push({
+                x: Math.random() * 1080,
+                y: Math.random() * 1920,
+                r: Math.random() * 40 + 10,
+                opacity: Math.random() * 0.15 + 0.05
             });
         }
+        
+        // Wait for fonts, then draw immediately
+        document.fonts.ready.then(() => {
+            drawFlyer();
+        });
 
-        // --- 2. HANDLE LOGO UPLOAD ---
-        function handleLogo(input) {
-            if(input.files && input.files[0]) {
+        // --- 3. HANDLE LOGO UPLOAD ---
+        function handleLogo(e) {
+            if(e.target.files && e.target.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function(evt) {
                     const img = new Image();
                     img.onload = function() {
-                        logoImg = img;
-                        document.getElementById('fileLabel').innerText = "✅ Image Loaded";
+                        uploadedImg = img;
+                        document.getElementById('fileLabel').innerText = "✅ Logo Ready";
                         drawFlyer();
                     };
-                    img.src = e.target.result;
+                    img.src = evt.target.result;
                 };
-                reader.readAsDataURL(input.files[0]);
+                reader.readAsDataURL(e.target.files[0]);
             }
         }
 
-        // --- 3. THE DRAWING ENGINE (The Magic Part) ---
+        // --- 4. THE DRAWING ENGINE ---
         function drawFlyer() {
             // A. Clear & Background
             ctx.fillStyle = COLORS.bg;
@@ -201,92 +205,109 @@
             particles.forEach(p => {
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-                ctx.fillStyle = `rgba(197, 160, 89, ${p.opacity})`; // Gold with opacity
+                ctx.fillStyle = `rgba(197, 160, 89, ${p.opacity})`;
                 ctx.fill();
             });
 
-            // C. Draw Logo
+            // C. Draw Logo Area
             const logoSize = 400;
-            const logoX = (1080 - logoSize) / 2;
             const logoY = 300;
             const centerX = 1080 / 2;
             const centerY = logoY + (logoSize/2);
 
-            ctx.save();
-            // 1. Clip Circle
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, logoSize/2, 0, Math.PI*2);
-            ctx.closePath();
-            ctx.clip();
-            // 2. Draw Image
-            // Calculate aspect ratio to cover the circle
-            let sWidth = logoImg.width;
-            let sHeight = logoImg.height;
-            let ratio = Math.max(logoSize / sWidth, logoSize / sHeight);
-            let dWidth = sWidth * ratio;
-            let dHeight = sHeight * ratio;
-            let dx = centerX - (dWidth/2);
-            let dy = centerY - (dHeight/2);
-            
-            ctx.drawImage(logoImg, dx, dy, dWidth, dHeight);
-            ctx.restore();
+            if (uploadedImg) {
+                // If logo exists, draw it clipped
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, logoSize/2, 0, Math.PI*2);
+                ctx.closePath();
+                ctx.clip();
+                
+                // Draw Image Cover
+                let sWidth = uploadedImg.width;
+                let sHeight = uploadedImg.height;
+                let ratio = Math.max(logoSize / sWidth, logoSize / sHeight);
+                let dWidth = sWidth * ratio;
+                let dHeight = sHeight * ratio;
+                let dx = centerX - (dWidth/2);
+                let dy = centerY - (dHeight/2);
+                
+                ctx.drawImage(uploadedImg, dx, dy, dWidth, dHeight);
+                ctx.restore();
+            } else {
+                // Placeholder Grey Circle if no logo yet
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, logoSize/2, 0, Math.PI*2);
+                ctx.fillStyle = "#E0E0E0";
+                ctx.fill();
+                
+                ctx.fillStyle = "#999";
+                ctx.font = "bold 40px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText("Upload Logo", centerX, centerY);
+            }
 
-            // 3. Draw Gold Ring
+            // Draw Gold Ring (Always visible)
             ctx.beginPath();
             ctx.arc(centerX, centerY, (logoSize/2) + 15, 0, Math.PI*2);
             ctx.lineWidth = 4;
             ctx.strokeStyle = COLORS.gold;
-            ctx.setLineDash([15, 10]); // Dashed effect
+            ctx.setLineDash([15, 10]); 
             ctx.stroke();
-            ctx.setLineDash([]); // Reset
+            ctx.setLineDash([]); 
 
             // D. Draw Typography
+            // Get values safely
             const title = document.getElementById('titleText').value.toUpperCase();
             const msg = document.getElementById('msgText').value;
             const sign = document.getElementById('signText').value;
 
             // Title
             ctx.fillStyle = COLORS.textDark;
-            ctx.font = "bold 130px 'Cinzel', serif"; // Large Title Font
+            ctx.font = "bold 130px 'Cinzel', serif"; 
             ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
             ctx.fillText(title, 540, 880);
 
             // Separator Line
             ctx.beginPath();
-            ctx.moveTo(440, 930);
-            ctx.lineTo(640, 930);
+            ctx.moveTo(440, 950);
+            ctx.lineTo(640, 950);
             ctx.lineWidth = 5;
             ctx.strokeStyle = COLORS.gold;
             ctx.stroke();
 
-            // Message Body (Text Wrapping)
+            // Message Body
             ctx.fillStyle = COLORS.textLight;
-            ctx.font = "300 50px 'Lato', sans-serif"; // Body Font
-            wrapText(ctx, msg, 540, 1050, 800, 80);
+            ctx.font = "300 50px 'Lato', sans-serif";
+            // IMPORTANT: Reset baseline for wrapping text
+            ctx.textBaseline = "top"; 
+            wrapText(ctx, msg, 540, 1080, 850, 80);
 
             // Signature
-            // Calculate Y position based on message length approximation, or fixed at bottom
             ctx.fillStyle = COLORS.textDark;
             ctx.font = "italic 40px 'Lato', sans-serif";
             ctx.fillText("With Love,", 540, 1600);
             
             ctx.fillStyle = COLORS.gold;
             ctx.font = "bold 70px 'Cinzel', serif";
-            ctx.fillText(sign, 540, 1700);
+            ctx.fillText(sign, 540, 1680);
         }
 
-        // Helper: Wrap text to fit width
+        // Helper: Robust Text Wrapping
         function wrapText(context, text, x, y, maxWidth, lineHeight) {
-            var paragraphs = text.split('\n');
+            // Split by newlines first to respect user formatting
+            const paragraphs = text.split('\n');
             
-            for (var p = 0; p < paragraphs.length; p++) {
-                var words = paragraphs[p].split(' ');
-                var line = '';
+            for (let p = 0; p < paragraphs.length; p++) {
+                const words = paragraphs[p].split(' ');
+                let line = '';
 
-                for(var n = 0; n < words.length; n++) {
-                    var testLine = line + words[n] + ' ';
-                    var metrics = context.measureText(testLine);
-                    var testWidth = metrics.width;
+                for(let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' ';
+                    const metrics = context.measureText(testLine);
+                    const testWidth = metrics.width;
+                    
                     if (testWidth > maxWidth && n > 0) {
                         context.fillText(line, x, y);
                         line = words[n] + ' ';
@@ -296,20 +317,17 @@
                     }
                 }
                 context.fillText(line, x, y);
-                y += lineHeight; // Add extra space for new paragraph
+                y += lineHeight; // Newline for paragraph
             }
         }
 
-        // --- 4. DOWNLOAD FUNCTION ---
+        // --- 5. DOWNLOAD ---
         function downloadFlyer() {
             const link = document.createElement('a');
             link.download = 'Armah_Flyer_Final.png';
-            link.href = canvas.toDataURL("image/png", 1.0); // Highest quality
+            link.href = canvas.toDataURL("image/png", 1.0);
             link.click();
         }
-
-        // Try to initialize immediately
-        init();
     </script>
 </body>
 </html>
